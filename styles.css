@@ -1,0 +1,19 @@
+/* css styles */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Barlow+Condensed:wght@400;600&display=swap');
+
+body {
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.03em;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+
+.navbar-brand, .navbar {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}

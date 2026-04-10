@@ -1,0 +1,5 @@
+---
+title: "My Resume"
+---
+
+{{< pdf files/Arman_Soleimani_Resume.pdf width=100% height=800 >}}

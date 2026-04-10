@@ -1,0 +1,45 @@
+---
+title: "Running"
+format:
+  html:
+    self-contained: false
+---
+
+## Gone Running
+
+```{=html}
+<a href="https://www.strava.com/athletes/53854051" target="_blank"
+   style="display:inline-flex; align-items:center; gap:10px; background-color:#FC4C02;
+          color:white; padding:12px 24px; border-radius:25px; text-decoration:none;
+          font-weight:bold; font-size:16px; box-shadow: 0 4px 10px rgba(252,76,2,0.4);
+          transition: transform 0.2s;">
+  🏃 View My Strava Profile
+</a>
+```
+
+### Oakland Half x Under Armour Elite Team
+
+```{=html}
+<blockquote class="instagram-media"
+  data-instgrm-permalink="https://www.instagram.com/p/DWO0y71kTFG/"
+  data-instgrm-version="14"
+  style="width:100%; max-width:540px;">
+</blockquote>
+<script async src="//www.instagram.com/embed.js"></script>
+```
+
+### GU: Pace the Rainbow
+
+```{=html}
+<div style="display:flex; justify-content:center;">
+  <iframe
+    width="315"
+    height="560"
+    src="https://www.youtube.com/embed/vY5WS2eHcCo"
+    title="Running YouTube Short"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+```

@@ -1,0 +1,35 @@
+{
+  "index.qmd": {
+    "index.html": "d734f3b2"
+  },
+  "about.qmd": {
+    "about.html": "37a08dd3"
+  },
+  "resume.qmd": {
+    "resume.html": "fd37eed8"
+  },
+  "projects/project1/index.qmd": {
+    "index.html": "a724db99"
+  },
+  "projects/project6/index.qmd": {
+    "index.html": "b94be47e"
+  },
+  "projects/project3/index.qmd": {
+    "index.html": "889a55e8"
+  },
+  "projects/project4/index.qmd": {
+    "index.html": "7b541a7e"
+  },
+  "projects/project5/index.qmd": {
+    "index.html": "fe49f2a1"
+  },
+  "projects/project2/index.qmd": {
+    "index.html": "2d167223"
+  },
+  "projects.qmd": {
+    "projects.html": "6d8b777b"
+  },
+  "running.qmd": {
+    "running.html": "132f3d37"
+  }
+}

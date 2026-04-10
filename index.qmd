@@ -1,0 +1,13 @@
+---
+title: "Arman Soleimani"
+image: "files/7777E0FE-3110-4AA9-90C6-123853DF4899_1_105_c.jpeg"
+about:
+    template: jolla
+    links:
+        - icon: envelope
+          href: mailto:a1soleimani@ucsd.edu
+        - icon: linkedin
+          href: https://www.linkedin.com/in/arman-soleimani-2b1461a8/
+---
+
+Welcome to my website!
