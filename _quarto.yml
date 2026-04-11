@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - running.mp4
 
 website:
   title: "Arman Soleimani"

@@ -1,17 +1,10 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Arman Soleimani",
+    "objectID": "running.html",
+    "href": "running.html",
+    "title": "Breathe",
     "section": "",
-    "text": "Welcome to my website!"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site"
+    "text": "🏃 View My Strava Profile\n  \n\n  Partnerships\n\n  Oakland Half x Under Armour Elite Team\n  \n  \n  \n\n  GU: Pace the Rainbow"
   },
   {
     "objectID": "resume.html",
@@ -28,24 +21,10 @@
     "text": "No matching items"
   },
   {
-    "objectID": "running.html",
-    "href": "running.html",
-    "title": "Running",
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "🏃 View My Strava Profile"
-  },
-  {
-    "objectID": "running.html#my-latest-run",
-    "href": "running.html#my-latest-run",
-    "title": "Running",
-    "section": "",
-    "text": "🏃 View My Strava Profile"
-  },
-  {
-    "objectID": "running.html#gone-running",
-    "href": "running.html#gone-running",
-    "title": "Running",
-    "section": "",
-    "text": "🏃 View My Strava Profile"
+    "text": "About this site"
   }
 ]

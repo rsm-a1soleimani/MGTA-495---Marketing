@@ -9,5 +9,3 @@ about:
         - icon: linkedin
           href: https://www.linkedin.com/in/arman-soleimani-2b1461a8/
 ---
-
-Welcome to my website!

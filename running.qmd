@@ -1,45 +1,100 @@
 ---
-title: "Running"
+title: "Breathe"
 format:
   html:
     self-contained: false
 ---
 
-## Gone Running
-
 ```{=html}
-<a href="https://www.strava.com/athletes/53854051" target="_blank"
-   style="display:inline-flex; align-items:center; gap:10px; background-color:#FC4C02;
-          color:white; padding:12px 24px; border-radius:25px; text-decoration:none;
-          font-weight:bold; font-size:16px; box-shadow: 0 4px 10px rgba(252,76,2,0.4);
-          transition: transform 0.2s;">
-  🏃 View My Strava Profile
-</a>
-```
+<style>
+  /* Override page background and content area */
+  body, .quarto-container, #quarto-content, .page-columns {
+    background-color: #2C4A2E !important;
+  }
 
-### Oakland Half x Under Armour Elite Team
+.hero-video-container {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 60vh;    /* changed from 85vh */
+    overflow: hidden;
+    margin-bottom: 60px;
+  }
 
-```{=html}
-<blockquote class="instagram-media"
-  data-instgrm-permalink="https://www.instagram.com/p/DWO0y71kTFG/"
-  data-instgrm-version="14"
-  style="width:100%; max-width:540px;">
-</blockquote>
-<script async src="//www.instagram.com/embed.js"></script>
-```
+  h1.title {
+    color: #ffffff !important;
+  }
 
-### GU: Pace the Rainbow
+  .hero-video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-```{=html}
-<div style="display:flex; justify-content:center;">
-  <iframe
-    width="315"
-    height="560"
-    src="https://www.youtube.com/embed/vY5WS2eHcCo"
-    title="Running YouTube Short"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
+  .running-content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .running-content h2, .running-content h3 {
+    color: #f5f0e8;
+    letter-spacing: 0.08em;
+  }
+
+  .strava-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #FC4C02;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(252,76,2,0.4);
+    margin-bottom: 48px;
+  }
+</style>
+
+<!-- Hero Video -->
+<div class="hero-video-container">
+  <video autoplay muted loop playsinline>
+    <source src="running.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- Rest of content -->
+<div class="running-content">
+
+  <a href="https://www.strava.com/athletes/53854051" target="_blank" class="strava-btn">
+    🏃 View My Strava Profile
+  </a>
+
+  <h2>Partnerships</h2>
+
+  <h3>Oakland Half x Under Armour Elite Team</h3>
+  <blockquote class="instagram-media"
+    data-instgrm-permalink="https://www.instagram.com/p/DWO0y71kTFG/"
+    data-instgrm-version="14"
+    style="width:100%; max-width:540px;">
+  </blockquote>
+  <script async src="//www.instagram.com/embed.js"></script>
+
+  <h3>GU: Pace the Rainbow</h3>
+  <div style="display:flex; justify-content:center;">
+    <iframe
+      width="315"
+      height="560"
+      src="https://www.youtube.com/embed/vY5WS2eHcCo"
+      title="Running YouTube Short"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+
 </div>
 ```
