@@ -1,3 +1,6 @@
 /.quarto/
 **/*.quarto_ipynb
 files/running.mov
+
+# RSM VS Code generated files
+.devcontainer/
