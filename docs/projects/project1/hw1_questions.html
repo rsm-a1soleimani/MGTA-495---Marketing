@@ -274,7 +274,7 @@ Note
 <h2 class="anchored" data-anchor-id="simulating-data">Simulating Data</h2>
 <p>Since the true values of <span class="math inline">\(\pi_A\)</span> and <span class="math inline">\(\pi_B\)</span> are unknown in the real world we need to run an experiment, but for the purpose of this exercise, we set them ourselves so we can study how our estimator behaves when we know the ground truth.</p>
 <p>We suppose <span class="math inline">\(\pi_A = 0.22\)</span> and <span class="math inline">\(\pi_B = 0.18\)</span>, making the true difference <span class="math inline">\(\theta = 0.04\)</span>. We then simulate 1,000 independent visitor outcomes for each CTA group.</p>
-<div id="0f57cb12" class="cell" data-execution_count="1">
+<div id="05bc2dd4" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -308,7 +308,7 @@ Estimated θ: 0.0380  (true θ = 0.04000000000000001)</code></pre>
 <h2 class="anchored" data-anchor-id="the-law-of-large-numbers">The Law of Large Numbers</h2>
 <p>The <strong>Law of Large Numbers (LLN)</strong> states that as the number of observations grows, the sample mean converges to the true population mean. Applied here, this means that as we collect more visitors, <span class="math inline">\(\bar{X}_A \to \pi_A\)</span> and <span class="math inline">\(\bar{X}_B \to \pi_B\)</span>, so our estimator <span class="math inline">\(\hat{\theta} = \bar{X}_A - \bar{X}_B\)</span> will converge to the true difference <span class="math inline">\(\theta = 0.04\)</span>. The LLN is the theoretical foundation for trusting that a large enough sample will give us a reliable estimate.</p>
 <p>To demonstrate this, we compute the element-wise differences between the CTA A and CTA B draws and plot the <strong>cumulative (running) average</strong> of those differences as a function of the number of observations included.</p>
-<div id="cf710fac" class="cell" data-execution_count="2">
+<div id="49cfeede" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>diffs <span class="op">=</span> A <span class="op">-</span> B</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>cumulative_avg <span class="op">=</span> np.cumsum(diffs) <span class="op">/</span> np.arange(<span class="dv">1</span>, n <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -337,7 +337,7 @@ Estimated θ: 0.0380  (true θ = 0.04000000000000001)</code></pre>
 <h2 class="anchored" data-anchor-id="bootstrap-standard-errors">Bootstrap Standard Errors</h2>
 <p>Knowing that our estimator converges to the truth is reassuring, but it raises another important question: <strong>how precise is it?</strong> We want to report not just a point estimate but also a confidence interval that captures our uncertainty about <span class="math inline">\(\theta\)</span>.</p>
 <p>One way to quantify estimator variability is the <strong>bootstrap</strong>. Instead of deriving a formula for the standard error analytically, we let the data speak for itself. We repeatedly resample (with replacement) from our observed data, compute the statistic of interest on each resample, and use the standard deviation of those resampled estimates as our estimate of the standard error.</p>
-<div id="349b1c0b" class="cell" data-execution_count="3">
+<div id="374a89c0" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>B_reps <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>boot_thetas <span class="op">=</span> np.empty(B_reps)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -356,7 +356,7 @@ Estimated θ: 0.0380  (true θ = 0.04000000000000001)</code></pre>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ci_lower <span class="op">=</span> theta_hat <span class="op">-</span> <span class="fl">1.96</span> <span class="op">*</span> se_boot</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>ci_upper <span class="op">=</span> theta_hat <span class="op">+</span> <span class="fl">1.96</span> <span class="op">*</span> se_boot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="72124fe4" class="cell" data-execution_count="4">
+<div id="2c9c5f3d" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
 <pre><code>             Metric  Value
 Point estimate (θ̂) 0.0380
@@ -372,7 +372,7 @@ Point estimate (θ̂) 0.0380
 <h2 class="anchored" data-anchor-id="the-central-limit-theorem">The Central Limit Theorem</h2>
 <p>The <strong>Central Limit Theorem (CLT)</strong> states that regardless of the shape of the underlying population distribution (Bernoulli, uniform, skewed, or anything else) the sampling distribution of the sample mean becomes approximately <strong>Normal</strong> as the sample size grows. This applies to our difference-in-means estimator <span class="math inline">\(\hat{\theta}\)</span> as well.</p>
 <p>To see this in action, we simulate 1,000 estimates of <span class="math inline">\(\hat{\theta}\)</span> at four different sample sizes (<span class="math inline">\(n \in \{25, 50, 100, 500\}\)</span>) and plot the resulting histograms.</p>
-<div id="b6079b6d" class="cell" data-execution_count="5">
+<div id="92660d65" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -395,7 +395,7 @@ Point estimate (θ̂) 0.0380
 <p><span class="math display">\[z = \frac{\hat{\theta} - 0}{SE(\hat{\theta})}\]</span></p>
 <p>Here is the logic step by step. First, by the CLT, <span class="math inline">\(\hat{\theta}\)</span> is approximately Normal for large samples, and under <span class="math inline">\(H_0\)</span> its mean is 0. Second, dividing a Normal random variable by its standard deviation produces a <strong>standard Normal</strong> <span class="math inline">\(N(0, 1)\)</span> — so under <span class="math inline">\(H_0\)</span>, <span class="math inline">\(z \;\dot{\sim}\; N(0,1)\)</span>. Third, because we know the null distribution of <span class="math inline">\(z\)</span>, we can compute a <strong>p-value</strong>: the probability of observing a z-statistic at least as extreme as ours if <span class="math inline">\(H_0\)</span> were true.</p>
 <p>You may have heard this called a <strong>t-test</strong>, but the name deserves some scrutiny. The classical t-test was derived for data drawn from a Normal distribution; in that setting, the ratio of the estimated mean to its estimated standard deviation follows an <em>exact</em> t-distribution. Our data are Bernoulli — not Normal — so no exact t-distribution result applies. The CLT gives us approximate Normality, and for large samples the t-distribution and the standard Normal are virtually indistinguishable. In practice, the distinction rarely matters, but it is important to understand what you are actually relying on.</p>
-<div id="4b4bd252" class="cell" data-execution_count="6">
+<div id="d85f4d1b" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>theta_hat <span class="op">=</span> A.mean() <span class="op">-</span> B.mean()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>se <span class="op">=</span> np.sqrt(A.mean() <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> A.mean()) <span class="op">/</span> n <span class="op">+</span> B.mean() <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> B.mean()) <span class="op">/</span> n)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>z_stat <span class="op">=</span> theta_hat <span class="op">/</span> se</span>
@@ -422,7 +422,7 @@ Point estimate (θ̂) 0.0380
 <p>We stack the CTA A and CTA B outcomes into a single dataset with two columns: an outcome <span class="math inline">\(Y_i\)</span> (1 if visitor <span class="math inline">\(i\)</span> signed up, 0 otherwise) and an indicator <span class="math inline">\(D_i\)</span> (1 if they saw CTA A, 0 if CTA B). We then fit:</p>
 <p><span class="math display">\[Y_i = \beta_0 + \beta_1 D_i + \varepsilon_i\]</span></p>
 <p>The coefficients have clean interpretations. When <span class="math inline">\(D_i = 0\)</span>, the model predicts <span class="math inline">\(\beta_0\)</span> — the mean of the CTA B group, estimating <span class="math inline">\(\pi_B\)</span>. When <span class="math inline">\(D_i = 1\)</span>, it predicts <span class="math inline">\(\beta_0 + \beta_1\)</span> — the mean of the CTA A group, estimating <span class="math inline">\(\pi_A\)</span>. Therefore <span class="math inline">\(\beta_1 = \pi_A - \pi_B = \theta\)</span>, and the OLS estimate <span class="math inline">\(\hat{\beta}_1\)</span> is numerically identical to <span class="math inline">\(\hat{\theta} = \bar{X}_A - \bar{X}_B\)</span>.</p>
-<div id="26b4c8af" class="cell" data-execution_count="7">
+<div id="d0e985b0" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Y"</span>: np.concatenate([A, B]),</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"D"</span>: np.concatenate([np.ones(n), np.zeros(n)])</span>
@@ -452,7 +452,7 @@ D / CTA A indicator (β₁)   0.0380     0.0178      2.1377  0.0327</code></pre>
 <p>Imagine your boss is impatient. Instead of waiting for all 1,000 visitors to be assigned, she wants to check the results after every 100 visitors per group — peeking at <span class="math inline">\(n = 100, 200, \ldots, 1000\)</span> — and stop the experiment as soon as any test comes back significant at <span class="math inline">\(\alpha = 0.05\)</span>. This sounds reasonable. It is not.</p>
 <p>The problem is about the <strong>cumulative false positive rate</strong>. A single hypothesis test at <span class="math inline">\(\alpha = 0.05\)</span> has, by design, a 5% chance of rejecting a true null hypothesis. But each additional peek is a fresh opportunity to get a spurious significant result. Across 10 peeks, the probability of at least one false positive is much higher than 5%, even if the null is true throughout.</p>
 <p>We can quantify this with a simulation. We set up a world where the null is true (<span class="math inline">\(\pi_A = \pi_B = 0.20\)</span>, so <span class="math inline">\(\theta = 0\)</span>) and run 10,000 simulated experiments. In each experiment, we peek 10 times and record whether any peek produces a p-value below 0.05.</p>
-<div id="1e4d50a0" class="cell" data-execution_count="8">
+<div id="f12053f2" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">99</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>N_SIMS <span class="op">=</span> <span class="dv">10_000</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>false_positives <span class="op">=</span> <span class="dv">0</span></span>

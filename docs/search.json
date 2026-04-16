@@ -7,27 +7,6 @@
     "text": "🏃 View My Strava Profile\n  \n\n  Partnerships\n\n  Oakland Half x Under Armour Elite Team\n  \n  \n  \n\n  GU: Pace the Rainbow"
   },
   {
-    "objectID": "resume.html",
-    "href": "resume.html",
-    "title": "My Resume",
-    "section": "",
-    "text": "Download PDF file."
-  },
-  {
-    "objectID": "projects.html",
-    "href": "projects.html",
-    "title": "My Projects",
-    "section": "",
-    "text": "A/B Testing a Call to Action\n\n\n\n\n\n\nArman Soleimani\n\n\nApr 15, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site"
-  },
-  {
     "objectID": "projects/project1/hw1_questions.html",
     "href": "projects/project1/hw1_questions.html",
     "title": "A/B Testing a Call to Action",
@@ -96,5 +75,26 @@
     "title": "A/B Testing a Call to Action",
     "section": "The Problem with Peeking",
     "text": "The Problem with Peeking\nImagine your boss is impatient. Instead of waiting for all 1,000 visitors to be assigned, she wants to check the results after every 100 visitors per group — peeking at \\(n = 100, 200, \\ldots, 1000\\) — and stop the experiment as soon as any test comes back significant at \\(\\alpha = 0.05\\). This sounds reasonable. It is not.\nThe problem is about the cumulative false positive rate. A single hypothesis test at \\(\\alpha = 0.05\\) has, by design, a 5% chance of rejecting a true null hypothesis. But each additional peek is a fresh opportunity to get a spurious significant result. Across 10 peeks, the probability of at least one false positive is much higher than 5%, even if the null is true throughout.\nWe can quantify this with a simulation. We set up a world where the null is true (\\(\\pi_A = \\pi_B = 0.20\\), so \\(\\theta = 0\\)) and run 10,000 simulated experiments. In each experiment, we peek 10 times and record whether any peek produces a p-value below 0.05.\n\nnp.random.seed(99)\nN_SIMS = 10_000\nfalse_positives = 0\n\nfor _ in range(N_SIMS):\n    A_null = np.random.binomial(1, 0.20, 1000)\n    B_null = np.random.binomial(1, 0.20, 1000)\n    peeked_significant = False\n    for peek in range(100, 1001, 100):\n        a = A_null[:peek]\n        b = B_null[:peek]\n        se_peek = np.sqrt(a.mean() * (1 - a.mean()) / peek + b.mean() * (1 - b.mean()) / peek)\n        if se_peek == 0:\n            continue\n        z_peek = (a.mean() - b.mean()) / se_peek\n        p_peek = 2 * (1 - stats.norm.cdf(abs(z_peek)))\n        if p_peek &lt; 0.05:\n            peeked_significant = True\n            break\n    if peeked_significant:\n        false_positives += 1\n\nempirical_fpr = false_positives / N_SIMS\nprint(f\"Nominal false positive rate (single test): 5.00%\")\nprint(f\"Empirical false positive rate (10 peeks):  {empirical_fpr * 100:.1f}%\")\n\nNominal false positive rate (single test): 5.00%\nEmpirical false positive rate (10 peeks):  20.2%\n\n\nThe empirical false positive rate under peeking is roughly 20–25% — four to five times the nominal 5% level. In other words, if you adopt the peeking strategy, you will declare a winner in roughly one out of every four experiments even when neither CTA is actually better.\nThis is not a loophole or a quirk — it is a fundamental property of classical frequentist inference. The p-value guarantee holds only if the test is specified in advance and run exactly once. Every additional peek erodes that guarantee. In practice, if you need to monitor experiments in real time, the right tool is sequential testing with an alpha-spending function, or a Bayesian framework designed for continuous monitoring — not repeated application of a fixed-sample test."
+  },
+  {
+    "objectID": "resume.html",
+    "href": "resume.html",
+    "title": "My Resume",
+    "section": "",
+    "text": "Download PDF file."
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "My Projects",
+    "section": "",
+    "text": "A/B Testing a Call to Action\n\n\n\n\n\n\nArman Soleimani\n\n\nApr 15, 2026\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
   }
 ]
