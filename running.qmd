@@ -7,32 +7,65 @@ format:
 
 ```{=html}
 <style>
-  /* Override page background and content area */
   body, .quarto-container, #quarto-content, .page-columns {
     background-color: #2C4A2E !important;
+    overflow-x: hidden;
   }
 
-.hero-video-container {
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 60vh;    /* changed from 85vh */
-    overflow: hidden;
-    margin-bottom: 60px;
+  /* Override Quarto's grid that causes side gaps */
+  .page-columns {
+    grid-template-columns: 0 0 1fr 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   h1.title {
-    color: #ffffff !important;
+    color: #f5f0e8 !important;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Cream text for page content only */
+  p, li, span, .running-content {
+    color: #f5f0e8;
+  }
+
+  /* Force navbar back to its original dark colors */
+  #quarto-header,
+  #quarto-header *,
+  .navbar,
+  .navbar *,
+  .navbar-brand,
+  .navbar-brand *,
+  .nav-link,
+  .navbar-nav .nav-link {
+    color: #343a40 !important;
+  }
+
+  .hero-video-container {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 60vh;
+    overflow: hidden;
+    margin-top: 20px;
+    margin-bottom: 60px;
   }
 
   .hero-video-container video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
   .running-content {
+    position: relative;
+    z-index: 1;
     max-width: 600px;
     margin: 0 auto;
     padding: 0 20px 80px;
@@ -48,7 +81,7 @@ format:
     align-items: center;
     gap: 10px;
     background-color: #FC4C02;
-    color: white;
+    color: white !important;
     padding: 12px 24px;
     border-radius: 25px;
     text-decoration: none;
@@ -62,7 +95,7 @@ format:
 <!-- Hero Video -->
 <div class="hero-video-container">
   <video autoplay muted loop playsinline>
-    <source src="running.mp4" type="video/mp4">
+    <source src="files/running.mp4" type="video/mp4">
   </video>
 </div>
 
