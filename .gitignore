@@ -4,3 +4,7 @@ files/running.mov
 
 # RSM VS Code generated files
 .devcontainer/
+files/running.mov
+files/running.mov.zip
+*.mov
+**/.DS_Store
