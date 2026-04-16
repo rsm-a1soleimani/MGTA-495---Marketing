@@ -1,5 +1,5 @@
 ---
-title: "Breathe"
+title: ""
 format:
   html:
     self-contained: false
