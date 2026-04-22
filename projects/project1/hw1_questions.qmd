@@ -2,7 +2,7 @@
 title: A/B Testing a Call to Action
 subtitle: "Simulating Key Ideas from Classical Frequentist Statistics"
 author: "Arman Soleimani"
-date: today
+date: April 15, 2026
 ---
 
 

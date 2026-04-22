@@ -2,7 +2,7 @@
 title: "Replication of Card and Krueger (1994)"
 subtitle: "Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania"
 author: "Arman Soleimani"
-date: today
+date: April 22, 2026
 ---
 
 ## Introduction
