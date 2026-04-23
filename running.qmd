@@ -80,14 +80,18 @@ format:
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background-color: #FC4C02;
+    background-color: #D4511E;
     color: white !important;
     padding: 12px 24px;
-    border-radius: 25px;
+    border-radius: 0;
+    border: 2px solid #1C1915
     text-decoration: none;
     font-weight: bold;
     font-size: 16px;
-    box-shadow: 0 4px 10px rgba(252,76,2,0.4);
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 #1C1915;
     margin-bottom: 48px;
   }
 </style>
@@ -103,7 +107,7 @@ format:
 <div class="running-content">
 
   <a href="https://www.strava.com/athletes/53854051" target="_blank" class="strava-btn">
-    🏃 View My Strava Profile
+    View My Strava Profile
   </a>
 
   <h2>Partnerships</h2>
