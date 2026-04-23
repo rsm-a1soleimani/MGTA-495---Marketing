@@ -107,7 +107,7 @@ format:
 <div class="running-content">
 
   <a href="https://www.strava.com/athletes/53854051" target="_blank" class="strava-btn">
-    View My Strava Profile
+    My Strava
   </a>
 
   <h2>Partnerships</h2>
