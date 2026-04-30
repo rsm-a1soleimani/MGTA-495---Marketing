@@ -12,10 +12,10 @@ Whenever a website wants to grow its audience, it faces the question: what kind 
 
 The two "calls to action" (CTAs) that I tested were:
 
-**CTA A**: *"Sign up for our newsletter here!"*
-**CTA B**: *"Stay up to date by signing up!"*
+- **CTA A**: *"Sign up for our newsletter here!"*
+- **CTA B**: *"Stay up to date by signing up!"*
 
-In order to evaluate them, I ran an A/B test: each visitor was randomly assigned to see one of the two CTAs. I then compared the proportion of visitors who signed up in each group. The most important piece of this is randoms assignment. It ensures that differences in sign-up rates is related to CTA wording, and not some other difference between visitors who happened to see each version.
+In order to evaluate them, I ran an A/B test: each visitor was randomly assigned to see one of the two CTAs. I then compared the proportion of visitors who signed up in each group. The most important piece of this is random assignment. It ensures that differences in sign-up rates are related to CTA wording, and not some other difference between visitors who happened to see each version.
 
 ## The A/B Test as a Statistical Problem
 
@@ -50,6 +50,7 @@ Since the true values of $\pi_A$ and $\pi_B$ are unknown in the real world we ne
 We suppose $\pi_A = 0.22$ and $\pi_B = 0.18$, making the true difference $\theta = 0.04$. We then simulate 1,000 independent visitor outcomes for each CTA group.
 
 ```{python}
+# Load libraries for data manipulation, plotting, and statistical analysis.
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -59,16 +60,20 @@ import statsmodels.formula.api as smf
 import warnings
 warnings.filterwarnings("ignore")
 
+# Fix the random seed so the simulation is reproducible.
 np.random.seed(42)
 
+# Define the true sign-up probabilities for the two CTA groups.
 pi_A = 0.22
 pi_B = 0.18
 n = 1000
 theta_true = pi_A - pi_B
 
+# Simulate binary outcomes for each visitor in group A and group B.
 A = np.random.binomial(1, pi_A, n)
 B = np.random.binomial(1, pi_B, n)
 
+# Print the observed sample proportions and the estimated difference.
 print(f"CTA A sample proportion: {A.mean():.4f}  (true π_A = {pi_A})")
 print(f"CTA B sample proportion: {B.mean():.4f}  (true π_B = {pi_B})")
 print(f"Estimated θ: {A.mean() - B.mean():.4f}  (true θ = {theta_true})")
@@ -81,7 +86,9 @@ The **Law of Large Numbers (LLN)** states that as the number of observations gro
 To demonstrate this, we compute the element-wise differences between the CTA A and CTA B draws and plot the **cumulative (running) average** of those differences as a function of the number of observations included.
 
 ```{python}
+# Compute the observation-by-observation difference between group A and group B.
 diffs = A - B
+# Compute the running average of those differences to show convergence.
 cumulative_avg = np.cumsum(diffs) / np.arange(1, n + 1)
 
 fig, ax = plt.subplots(figsize=(9, 4))
@@ -106,16 +113,21 @@ Knowing that our estimator converges to the truth is reassuring, but it raises a
 One way to quantify estimator variability is the **bootstrap**. Instead of deriving a formula for the standard error analytically, we let the data speak for itself. We repeatedly resample (with replacement) from our observed data, compute the statistic of interest on each resample, and use the standard deviation of those resampled estimates as our estimate of the standard error.
 
 ```{python}
+# Perform a bootstrap simulation to estimate the sampling variability of θ̂.
 B_reps = 1000
 boot_thetas = np.empty(B_reps)
 
 for i in range(B_reps):
+    # Resample with replacement from each group separately.
     A_boot = np.random.choice(A, size=n, replace=True)
     B_boot = np.random.choice(B, size=n, replace=True)
+    # Compute the difference in bootstrap sample means for this replicate.
     boot_thetas[i] = A_boot.mean() - B_boot.mean()
 
+# The bootstrap standard error is the standard deviation of the bootstrap estimates.
 se_boot = np.std(boot_thetas, ddof=1)
 
+# Compute the analytical standard error for comparison.
 pi_A_hat = A.mean()
 pi_B_hat = B.mean()
 se_analytical = np.sqrt(pi_A_hat * (1 - pi_A_hat) / n + pi_B_hat * (1 - pi_B_hat) / n)
@@ -127,6 +139,8 @@ ci_upper = theta_hat + 1.96 * se_boot
 
 ```{python}
 #| echo: false
+# Create a summary table that reports the point estimate, bootstrap SE,
+# analytical SE, and a 95% confidence interval for θ.
 summary_df = pd.DataFrame({
     "Metric": ["Point estimate (θ̂)", "Bootstrap SE", "Analytical SE", "95% CI (lower)", "95% CI (upper)"],
     "Value": [
@@ -141,7 +155,7 @@ summary_df = pd.DataFrame({
 print(summary_df.to_string(index=False))
 ```
 
-The bootstrap standard error and the analytical standard error are nearly identical, which is reassuring, it confirms that our resampling procedure is correctly capturing the variability of $\hat{\theta}$. The 95% confidence interval for $\theta$ is approximately (`{python} f"{ci_lower:.3f}"`, `{python} f"{ci_upper:.3f}"`). Because this interval lies entirely above zero, it suggests that CTA A does outperform CTA B, though we will test this more formally in a moment. We are 95% confident the true difference in sign-up rates falls within this range.
+The bootstrap standard error and the analytical standard error are nearly identical, which is reassuring and confirms that our resampling procedure is correctly capturing the variability of $\hat{\theta}$. The 95% confidence interval for $\theta$ lies entirely above zero, which suggests that CTA A outperforms CTA B. We will test this more formally in a moment. This interval communicates that we are 95% confident the true difference in sign-up rates falls within this range.
 
 
 ## The Central Limit Theorem
@@ -152,14 +166,16 @@ To see this in action, we simulate 1,000 estimates of $\hat{\theta}$ at four dif
 
 ```{python}
 #| echo: false
+# Simulate the sampling distribution of θ̂ for several sample sizes.
 sample_sizes = [25, 50, 100, 500]
 colors = ["blue", "green", "red", "purple"]
 
-fig, axes = plt.subplots(2, 2, figsize=(10, 7), sharey=False)
+fig, axes = plt.subplots(2, 2, figsize=(8, 6), sharey=False)
 axes = axes.flatten()
 
 all_thetas = {}
 for n_s in sample_sizes:
+    # Generate 1,000 independent estimates of θ̂ for each sample size.
     thetas = np.array([
         np.random.binomial(n_s, pi_A, 1).mean() - np.random.binomial(n_s, pi_B, 1).mean()
         for _ in range(1000)
@@ -173,7 +189,7 @@ for ax, n_s, color in zip(axes, sample_sizes, colors):
     thetas = all_thetas[n_s]
     ax.hist(thetas, bins=30, color=color, edgecolor="white", alpha=0.85, density=True)
 
-    # Overlay normal curve
+    # Overlay a Normal density curve for comparison.
     mu, sigma = thetas.mean(), thetas.std()
     x_range = np.linspace(x_min, x_max, 200)
     ax.plot(x_range, stats.norm.pdf(x_range, mu, sigma), "k--", linewidth=1.5, label="Normal fit")
@@ -211,11 +227,15 @@ Here is the logic step by step. First, by the CLT, $\hat{\theta}$ is approximate
 You may have heard this called a **t-test**, but the name deserves some scrutiny. The classical t-test was derived for data drawn from a Normal distribution; in that setting, the ratio of the estimated mean to its estimated standard deviation follows an *exact* t-distribution. Our data are Bernoulli — not Normal — so no exact t-distribution result applies. The CLT gives us approximate Normality, and for large samples the t-distribution and the standard Normal are virtually indistinguishable. In practice, the distinction rarely matters, but it is important to understand what you are actually relying on.
 
 ```{python}
+# Compute the estimated difference in proportions and its standard error.
 theta_hat = A.mean() - B.mean()
 se = np.sqrt(A.mean() * (1 - A.mean()) / n + B.mean() * (1 - B.mean()) / n)
+
+# Convert the estimate into a z-statistic under the null hypothesis θ = 0.
 z_stat = theta_hat / se
 p_value = 2 * (1 - stats.norm.cdf(abs(z_stat)))
 
+# Display the test results in a small summary table.
 results_df = pd.DataFrame({
     "Statistic": ["θ̂ (estimated difference)", "SE(θ̂)", "z-statistic", "p-value"],
     "Value": [f"{theta_hat:.4f}", f"{se:.4f}", f"{z_stat:.4f}", f"{p_value:.4f}"]
@@ -237,13 +257,16 @@ $$Y_i = \beta_0 + \beta_1 D_i + \varepsilon_i$$
 The coefficients have clean interpretations. When $D_i = 0$, the model predicts $\beta_0$ — the mean of the CTA B group, estimating $\pi_B$. When $D_i = 1$, it predicts $\beta_0 + \beta_1$ — the mean of the CTA A group, estimating $\pi_A$. Therefore $\beta_1 = \pi_A - \pi_B = \theta$, and the OLS estimate $\hat{\beta}_1$ is numerically identical to $\hat{\theta} = \bar{X}_A - \bar{X}_B$.
 
 ```{python}
+# Stack the two groups into a single dataset for regression analysis.
 df = pd.DataFrame({
     "Y": np.concatenate([A, B]),
     "D": np.concatenate([np.ones(n), np.zeros(n)])
 })
 
+# Fit a simple linear regression of the binary outcome on the group indicator.
 model = smf.ols("Y ~ D", data=df).fit()
 
+# Summarize the regression coefficients and standard errors.
 reg_results = pd.DataFrame({
     "Term": ["Intercept (β₀)", "D / CTA A indicator (β₁)"],
     "Estimate": [f"{model.params['Intercept']:.4f}", f"{model.params['D']:.4f}"],
