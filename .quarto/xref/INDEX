@@ -37,5 +37,29 @@
   },
   "projects/project2/hw2_questions.qmd": {
     "hw2_questions.html": "7a0e31fa"
+  },
+  "website/resume.qmd": {
+    "resume.html": "88e013ae"
+  },
+  "website/projects/hw2/index.qmd": {
+    "index.html": "f90b0b7d"
+  },
+  "website/projects/project1/index.qmd": {
+    "index.html": "d78f932b"
+  },
+  "website/projects/hw1/index.qmd": {
+    "index.html": "9c9e0a36"
+  },
+  "website/projects/project2/index.qmd": {
+    "index.html": "474b5f29"
+  },
+  "website/projects.qmd": {
+    "projects.html": "804a3c3e"
+  },
+  "website/index.qmd": {
+    "index.html": "a1641b8d"
+  },
+  "projects/project3/hw3_questions.qmd": {
+    "hw3_questions.html": "5876bccc"
   }
 }
