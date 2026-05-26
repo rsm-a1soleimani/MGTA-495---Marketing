@@ -204,9 +204,9 @@ plt.savefig('counts_plot.png', dpi=150, bbox_inches='tight')
 plt.show()
 ```
 
-The counts scores reveal a clear hierarchy among MSBA courses. At the top, **Marketing Analytics** and **Customer Analytics** consistently rank as most preferred — these courses likely resonate because they combine hands-on modeling with direct business application. **SQL** and **Large Data** also score positively, reflecting students' awareness that these technical skills are in high demand.
+The counts scores reveal a clear hierarchy among MSBA courses. At the top, **Marketing Analytics** and **Customer Analytics** consistently rank as most preferred — these courses likely resonate because they combine hands-on modeling with direct business application. **SQL** and **Large Data** also score positively, reflecting students' awareness that these technical skills are in high demand. They both also have professors that are incredibly engaging with the class, which help when it comes to material retention and general enjoyment.
 
-At the bottom, **Capstone** and **Analytics Consulting** tend to score lower. This is not necessarily a surprise: the Capstone is a pass/fail requirement that may feel more like an obligation than a favorite, while the consulting course is process-oriented rather than technical.
+At the bottom, **Mktg/Fin/Ops** and **Analytics Consulting** tend to score lower. This is not necessarily a surprise: Mktg/Fin/Ops is a shorter summer requirement that may feel more like an obligation than a favorite. It touches upon 3 different topics in a short period, making it hard to really engage in any of them. The consulting course is process-oriented rather than technical.
 
 The bootstrap confidence intervals show that the top and bottom positions are well-established — the CIs for the top-ranked and bottom-ranked courses do not overlap with the middle of the pack. Rankings in the middle of the distribution are less certain.
 
