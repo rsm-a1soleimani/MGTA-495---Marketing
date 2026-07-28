@@ -1,6 +1,6 @@
 ---
-title: "My Projects"
-listing:
-  contents: projects
-  type: grid          # <-- my preferred layout type
+#title: "My Projects"
+#listing:
+#  contents: projects
+#  type: grid          # <-- my preferred layout type
 ---

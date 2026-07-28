@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A/B Testing Uber Pricing in NYC's Congestion Zone</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/black.css">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --accent: #00c244;
+    --muted: rgba(255,255,255,0.5);
+    --card-bg: rgba(255,255,255,0.055);
+    --card-border: rgba(255,255,255,0.11);
+  }
+  .reveal-viewport { background: var(--bg); }
+  .reveal .slides { text-align: left; }
+  .reveal h1, .reveal h2 { font-weight: 800; letter-spacing: -0.02em; text-transform: none; }
+  .reveal h3 { font-weight: 700; text-transform: none; font-size: 1em; }
+  .reveal p { font-size: 0.87em; line-height: 1.65; }
+  .reveal li { font-size: 0.84em; line-height: 1.6; margin-bottom: 0.35em; }
+  .reveal strong { color: #fff; }
+  .reveal em { color: rgba(255,255,255,0.75); font-style: italic; }
+
+  /* Title */
+  .title-slide { text-align: center !important; }
+  .title-slide h1 { font-size: 2em; line-height: 1.1; margin-bottom: 0.15em; }
+  .subtitle { font-size: 1.1em; color: var(--accent); margin-bottom: 1.4em; }
+  .byline { font-size: 0.72em; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 0.8em; }
+
+  /* Accent bar */
+  .bar { width: 44px; height: 4px; background: var(--accent); margin-bottom: 26px; }
+
+  /* Layout */
+  .cols   { display: grid; gap: 24px; margin-top: 20px; }
+  .c2     { grid-template-columns: 1fr 1fr; }
+  .c3     { grid-template-columns: 1fr 1fr 1fr; }
+  .c-6040 { grid-template-columns: 60% 40%; }
+
+  /* Cards */
+  .card { background: var(--card-bg); border: 1px solid var(--card-border); padding: 20px 18px; }
+  .card-label { font-size: 0.58em; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+  .card h3 { margin: 0 0 8px; font-size: 0.9em; color: #fff; }
+  .card p  { font-size: 0.77em; color: rgba(255,255,255,0.65); margin: 0; line-height: 1.55; }
+  .card.accent { border-color: rgba(0,194,68,0.45); background: rgba(0,194,68,0.07); }
+
+  /* Callout */
+  .callout { border-left: 4px solid var(--accent); background: rgba(0,194,68,0.07); padding: 14px 18px; margin: 16px 0; }
+  .callout p { margin: 0; font-size: 0.85em; }
+
+  /* Step list */
+  .steps { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
+  .step  { display: flex; gap: 16px; align-items: flex-start; padding: 14px 16px; background: var(--card-bg); border-left: 3px solid var(--accent); }
+  .step-num { font-size: 1.2em; font-weight: 800; color: var(--accent); min-width: 24px; line-height: 1.1; }
+  .step-body h4 { font-size: 0.82em; color: #fff; margin: 0 0 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .step-body p  { font-size: 0.76em; color: rgba(255,255,255,0.62); margin: 0; line-height: 1.5; }
+
+  /* AB comparison */
+  .ab { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; }
+  .ab-box { padding: 18px 18px; border: 2px solid; }
+  .ab-box.ctrl { border-color: rgba(255,255,255,0.22); }
+  .ab-box.test { border-color: var(--accent); background: rgba(0,194,68,0.06); }
+  .ab-label { font-size: 0.58em; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 7px; }
+  .ctrl .ab-label { color: var(--muted); }
+  .test .ab-label { color: var(--accent); }
+  .ab-box h3 { font-size: 0.9em; margin: 0 0 8px; }
+  .ab-box ul { font-size: 0.77em; color: rgba(255,255,255,0.68); padding-left: 1.1em; margin: 0; }
+  .ab-box li { margin-bottom: 5px; }
+
+  /* Table */
+  .reveal table { font-size: 0.8em; width: 100%; border-collapse: collapse; margin-top: 14px; }
+  .reveal table th { background: rgba(255,255,255,0.1); padding: 9px 13px; text-align: left; font-weight: 600; border-bottom: 2px solid rgba(255,255,255,0.18); }
+  .reveal table td { padding: 9px 13px; border-bottom: 1px solid rgba(255,255,255,0.07); font-size: 0.96em; }
+  .reveal table tr:last-child td { border-bottom: none; }
+  .reveal table .yes { color: var(--accent); font-weight: 600; }
+  .reveal table .no  { color: rgba(255,80,80,0.9); }
+
+  /* Big stat */
+  .big { font-size: 2.6em; font-weight: 900; color: var(--accent); line-height: 1; }
+  .big-label { font-size: 0.72em; color: var(--muted); margin-top: 3px; }
+
+  /* Metric grid */
+  .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+  .metric { padding: 14px 16px; background: var(--card-bg); border: 1px solid var(--card-border); }
+  .metric-type { font-size: 0.58em; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+  .metric h4 { font-size: 0.82em; color: #fff; margin: 0 0 4px; }
+  .metric p  { font-size: 0.74em; color: var(--muted); margin: 0; line-height: 1.45; }
+
+  /* Decision matrix */
+  .decision { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 18px; }
+  .dec-box { padding: 16px 14px; text-align: center; border: 1px solid; }
+  .dec-box.ship    { border-color: rgba(0,194,68,0.5); background: rgba(0,194,68,0.08); }
+  .dec-box.iterate { border-color: rgba(255,180,0,0.5); background: rgba(255,180,0,0.07); }
+  .dec-box.stop    { border-color: rgba(255,80,80,0.5); background: rgba(255,80,80,0.07); }
+  .dec-box .dec-icon { font-size: 1.6em; margin-bottom: 6px; }
+  .dec-box h4 { font-size: 0.82em; margin: 0 0 6px; }
+  .dec-box.ship    h4 { color: var(--accent); }
+  .dec-box.iterate h4 { color: #ffb400; }
+  .dec-box.stop    h4 { color: rgba(255,100,100,0.9); }
+  .dec-box p { font-size: 0.7em; color: var(--muted); margin: 0; line-height: 1.45; }
+
+  /* Muted */
+  .muted { color: var(--muted); font-size: 0.7em; font-style: italic; }
+
+  /* Footer */
+  .slide-footer { position: absolute; bottom: 12px; left: 0; right: 0; text-align: center; font-size: 0.52em; color: rgba(255,255,255,0.22); letter-spacing: 0.15em; text-transform: uppercase; }
+
+  .reveal .slide-number { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.35); font-size: 12px; padding: 3px 9px; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ── 1. TITLE ── -->
+<section class="title-slide" data-background-color="#0a0a0a">
+  <h1>A/B Testing Uber Pricing<br>in NYC's Congestion Zone</h1>
+  <div class="subtitle">How to measure what riders will actually tolerate</div>
+  <div class="byline">Arman Soleimani &nbsp;·&nbsp; MGTA 479 &nbsp;·&nbsp; 2026</div>
+  <div class="slide-footer">A/B Testing Uber Pricing · Arman Soleimani · 2026</div>
+</section>
+
+<!-- ── 2. CONTEXT ── -->
+<section data-background-color="#0a0a0a">
+  <div class="bar"></div>
+  <h2>The Setup</h2>
+  <p>In January 2025, NYC started charging tolls on every vehicle entering Manhattan below 60th Street. For Uber, that meant a <strong>$1.50 congestion surcharge per trip</strong> — passed directly to riders.</p>
+  <div class="cols c3" style="margin-top:18px;">
+    <div class="card">
+      <div class="card-label">What changed</div>
+      <h3>A forced price increase</h3>
+      <p>Every Uber trip into lower Manhattan suddenly cost riders $1.50 more — overnight, with no opt-out.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">What we observed</div>
+      <h3>Demand barely moved</h3>
+      <p>Despite the higher price, trip volume in the congestion zone stayed high. Riders kept riding.</p>
+    </div>
+    <div class="card accent">
+      <div class="card-label">The opportunity</div>
+      <h3>Room to price higher?</h3>
+      <p>If riders absorbed a $1.50 surcharge without flinching, could Uber raise base fares further — and by how much?</p>
+    </div>
+  </div>
+  <div class="slide-footer">A/B Testing Uber Pricing · Arman Soleimani · 2026</div>
+</section>
+
+<!-- ── 3. WHY NOT JUST LOOK AT THE DATA ── -->
+<section data-background-color="#0a0a0a">
+  <div class="bar"></div>
+  <h2>Why Not Just Look at What Happened?</h2>
+  <p>The congestion policy gave us useful evidence — but observational data has limits. To <em>safely</em> change prices further, you need a controlled test.</p>
+  <table>
+    <thead>
+      <tr><th>Approach</th><th>What you learn</th><th>Good enough to act on?</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Look at before/after trip data</td>
+        <td>Demand held up after the surcharge</td>
+        <td class="no">Maybe — confounded by season, economy, events</td>
+      </tr>
+      <tr>
+        <td>Compare congestion zone vs outer boroughs</td>
+        <td>Zone-specific effect of the price change</td>
+        <td class="no">Better — but zones differ in other ways too</td>
+      </tr>
+      <tr>
+        <td><strong>Randomized A/B test</strong></td>
+        <td>Exactly how <em>this</em> price change affects <em>these</em> riders</td>
+        <td class="yes">Yes — cleanest possible signal for a decision</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout" style="margin-top:18px;">
+    <p>Observational data tells you what happened. An A/B test tells you what <strong>caused</strong> it — and what will happen if you do it again, intentionally.</p>
+  </div>
+  <div class="slide-footer">A/B Testing Uber Pricing · Arman Soleimani · 2026</div>
+</section>
+
+<!-- ── 4. WHAT IS A/B TESTING ── -->
+<section data-background-color="#0a0a0a">
+  <div class="bar"></div>
+  <h2>What Is A/B Testing?</h2>
+  <p>Split your users randomly into two groups. Give each group a different experience. Measure what changes. Decide based on the difference.</p>
+  <div class="ab">
+    <div class="ab-box ctrl">
+      <div class="ab-label">Group A — Control</div>
+      <h3>Current experience</h3>
+      <ul>
+        <li>Standard Uber fares</li>
+        <li>No change from today</li>
+        <li>Sets the baseline to compare against</li>
+      </ul>
+    </div>
+    <div class="ab-box test">
+      <div class="ab-label">Group B — Treatment</div>
+      <h3>New experience</h3>
+      <ul>
+        <li>Slightly higher base fare in the congestion zone</li>
+        <li>Everything else identical</li>
+        <li>Reveals how riders respond</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:18px;">
+    <p>Because assignment is <strong>random</strong>, any difference in behavior between the two groups can only be explained by the price change — not by who the riders are or when they travel.</p>
+  </div>
+  <div class="slide-footer">A/B Testing Uber Pricing · Arman Soleimani · 2026</div>
+</section>
+
+<!-- ── 5. DESIGNING THE TEST ── -->
+<section data-background-color="#0a0a0a">
+  <div class="bar"></div>
+  <h2>Designing the Test</h2>
+  <p>Three decisions matter before you start — get these wrong and the results won't be usable.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h4>What to test</h4>
+        <p>A <strong>5% base fare increase</strong> on trips starting in the Manhattan congestion zone. Small enough to limit downside if it backfires, large enough to detect a real signal in the data.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h4>How to split users</h4>
+        <p>Randomly assign riders by <strong>user ID</strong> — not by time of day or location. This prevents the same person from seeing different prices on different days, which would confuse the measurement.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h4>How long to run it</h4>
+        <p>At least <strong>4–6 weeks</strong>. Short tests get distorted by day-of-week patterns, weather events, and randomness. Long enough for riders to adapt their behavior — not just react to novelty.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">A/B Testing Uber Pricing · Arman Soleimani · 2026</div>
+</section>
+
+<!-- ── 6. METRICS ── -->
+<section data-background-color="#0a0a0a">
+  <div class="bar"></div>
+  <h2>What to Measure</h2>
+  <p>Not all metrics are equal. You need a <strong>primary metric</strong> that defines success, and <strong>guardrail metrics</strong> that flag if something is breaking.</p>
+  <div class="metric-grid">
+    <div class="metric">
+      <div class="metric-type">Primary metric</div>
+      <h4>Revenue per rider</h4>
+      <p>Does Group B generate more revenue per active user? This is the main thing we want to increase.</p>
+    </div>
+    <div class="metric">
+      <div class="metric-type">Primary metric</div>
+      <h4>Trip completion rate</h4>
+      <p>Are Group B riders completing trips at the same rate? A drop here signals price resistance kicking in.</p>
+    </div>
+    <div class="metric">
+      <div class="metric-type">Guardrail metric</div>
+      <h4>Cancellation rate</h4>
+      <p>If Group B cancels more after seeing the fare, the price is too visible — even if trips still complete.</p>
+    </div>
+    <div class="metric">
+      <div class="metric-type">Guardrail metric</div>
+      <h4>Rider retention (30-day)</h4>
+      <p>Are Group B riders returning less over time? Short-run inelasticity can mask long-run churn.</p>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:14px;">Also worth tracking: Lyft usage in the zone. If Group B riders switch platforms rather than stop riding entirely, that's a different problem than dropping out altogether.</p>
+  <div class="slide-footer">A/B Testing Uber Pricing · Arman Soleimani · 2026</div>
+</section>
+
+<!-- ── 7. WHAT THE CONGESTION DATA ALREADY TELLS US ── -->
+<section data-background-color="#0a0a0a">
+  <div class="bar"></div>
+  <h2>What the Congestion Policy Already Tells Us</h2>
+  <p>The January 2025 surcharge was, in effect, a real-world price test — one we can use to set expectations for the A/B test.</p>
+  <div class="cols c2" style="margin-top:16px; align-items:start;">
+    <div>
+      <div style="margin-bottom:20px;">
+        <div class="big">−0.135</div>
+        <div class="big-label">Measured price elasticity in the congestion zone</div>
+      </div>
+      <p style="font-size:0.82em;">A <strong>1% price increase → 0.135% fewer trips</strong>. Demand is highly inelastic — riders barely adjusted when the surcharge hit.</p>
+      <p style="font-size:0.82em; margin-top:10px;">Compare to airline tickets (≈ −1.2) where a 1% increase causes a 1.2% drop in bookings. Manhattan Uber is far stickier than that.</p>
+    </div>
+    <div class="card accent" style="padding: 22px 20px;">
+      <div class="card-label">What this means for the A/B test</div>
+      <h3>We have a prior, not a guess</h3>
+      <p>We expect a 5% fare increase to reduce trips by roughly 0.7%. That means:</p>
+      <ul style="font-size:0.78em; margin-top:10px; padding-left:1.1em; color:rgba(255,255,255,0.72);">
+        <li>Revenue should increase for Group B</li>
+        <li>Trip volume drop should be small and detectable</li>
+        <li>If we see a much bigger drop, something has changed — the A/B test tells us that before we commit</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-footer">A/B Testing Uber Pricing · Arman Soleimani · 2026</div>
+</section>
+
+<!-- ── 8. READING THE RESULTS ── -->
+<section data-background-color="#0a0a0a">
+  <div class="bar"></div>
+  <h2>Reading the Results</h2>
+  <p>After 4–6 weeks, you compare Group A and Group B on every metric. Two things need to be true before you act.</p>
+  <div class="cols c2" style="margin-top:14px;">
+    <div class="card">
+      <div class="card-label">Is the difference real?</div>
+      <h3>Statistical significance</h3>
+      <p>Did we collect enough data that the difference between groups isn't just noise? With millions of Uber trips per month in Manhattan, this threshold is typically reached quickly.</p>
+      <p style="margin-top:8px; font-size:0.76em; color:var(--muted);">Standard threshold: p &lt; 0.05 — meaning less than a 5% chance the result is a fluke.</p>
+    </div>
+    <div class="card">
+      <div class="card-label">Does the difference matter?</div>
+      <h3>Practical significance</h3>
+      <p>Even a statistically real result might be too small to care about. A revenue increase of 0.01% isn't worth the operational complexity of changing the pricing model.</p>
+      <p style="margin-top:8px; font-size:0.76em; color:var(--muted);">Uber would set a minimum threshold — e.g., "at least 3% revenue uplift" — before shipping.</p>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:18px;">
+    <p>Both boxes need to be checked. A result can be <em>statistically</em> significant without being <em>practically</em> meaningful — and a big effect that isn't statistically reliable is just noise.</p>
+  </div>
+  <div class="slide-footer">A/B Testing Uber Pricing · Arman Soleimani · 2026</div>
+</section>
+
+<!-- ── 9. THE DECISION ── -->
+<section data-background-color="#0a0a0a">
+  <div class="bar"></div>
+  <h2>Making the Call</h2>
+  <p>At the end of the test, you're in one of three situations.</p>
+  <div class="decision">
+    <div class="dec-box ship">
+      <div class="dec-icon">✓</div>
+      <h4>Ship it</h4>
+      <p>Revenue up, trip volume held, guardrail metrics clean. Roll the price increase out to all riders in the congestion zone.</p>
+    </div>
+    <div class="dec-box iterate">
+      <div class="dec-icon">↻</div>
+      <h4>Iterate</h4>
+      <p>Revenue up but cancellations also up. Try a smaller increase (3%) or test different framing — e.g., "congestion fee" vs. a silent base fare change.</p>
+    </div>
+    <div class="dec-box stop">
+      <div class="dec-icon">✗</div>
+      <h4>Don't ship</h4>
+      <p>Trip volume dropped more than expected, or 30-day retention fell. The elasticity in practice is worse than the model predicted. Hold prices flat for now.</p>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:18px;">
+    <p>The whole point of the test is that a <strong>"don't ship" result costs almost nothing</strong> — only a small share of riders saw the higher price, for a few weeks, with no permanent change.</p>
+  </div>
+  <div class="slide-footer">A/B Testing Uber Pricing · Arman Soleimani · 2026</div>
+</section>
+
+<!-- ── 10. TAKEAWAYS ── -->
+<section data-background-color="#0a0a0a">
+  <div class="bar"></div>
+  <h2>Key Takeaways</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h4>Congestion pricing created a natural signal — but not a safe enough one to act on alone</h4>
+        <p>The surcharge data suggests riders are price-insensitive in Manhattan. An A/B test confirms whether that holds when Uber intentionally raises prices further.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h4>A/B testing turns a risky pricing decision into a measured one</h4>
+        <p>Rather than changing prices for all riders and hoping the analysis was right, you expose a small group, measure the real impact, and then decide.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h4>Watch the guardrail metrics, not just the headline number</h4>
+        <p>Revenue can go up in the short run while retention quietly deteriorates. A test that only checks one metric can miss the actual problem.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h4>The value of the test is the option to stop</h4>
+        <p>If results are worse than expected, you've learned something important at minimal cost — before committing to a change that affects millions of trips a month.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">A/B Testing Uber Pricing · Arman Soleimani · 2026</div>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    backgroundTransition: 'fade',
+    controls: true,
+    progress: true,
+    center: false,
+    width: 1280,
+    height: 720,
+    margin: 0.06,
+  });
+</script>
+</body>
+</html>

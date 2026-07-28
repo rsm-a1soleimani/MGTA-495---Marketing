@@ -13,8 +13,8 @@ website:
         text: About
       - href: resume.qmd
         text: Resume
-      - href: projects.qmd
-        text: Projects
+      #- href: projects.qmd
+      #  text: Projects
       - href: running.qmd
         text: Running
 

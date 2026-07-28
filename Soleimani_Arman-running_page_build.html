@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Running Page — Arman Soleimani</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Barlow+Condensed:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Override RevealJS defaults with running-slides palette ── */
+  :root {
+    --forest:   #2C4A2E;
+    --cream:    #f5f0e8;
+    --cream-dim:rgba(245,240,232,0.65);
+    --strava:   #D4511E;
+    --ink:      #1C1915;
+    --code-bg:  #111916;
+  }
+
+  .reveal-viewport, .reveal,
+  .reveal .slides, .reveal .slide-background { background: var(--forest) !important; }
+
+  .reveal .slides { text-align: left; }
+
+  .reveal h1, .reveal h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700; text-transform: none;
+    color: var(--cream); letter-spacing: -0.01em;
+  }
+  .reveal h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    text-transform: uppercase; letter-spacing: 0.07em;
+    font-size: 0.9em; color: var(--cream); font-weight: 600;
+  }
+  .reveal p, .reveal li {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.84em; line-height: 1.62; color: var(--cream);
+  }
+  .reveal li { margin-bottom: 0.28em; }
+  .reveal strong { color: var(--cream); }
+  .reveal em { color: var(--cream-dim); font-style: italic; }
+  .reveal a  { color: var(--strava); }
+
+  /* Title slide */
+  .title-slide { text-align: center !important; }
+  .title-slide h1 { font-size: 2.4em; margin-bottom: 0.1em; }
+  .reveal .subtitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9em; color: var(--cream-dim);
+    letter-spacing: 0.06em; margin-bottom: 0.6em;
+  }
+  .reveal .author, .reveal .date {
+    font-family: 'Barlow Condensed', sans-serif;
+    color: var(--cream-dim); font-size: 0.75em; letter-spacing: 0.14em;
+  }
+
+  /* Slide label */
+  .label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6em; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--strava); margin-bottom: 12px;
+  }
+
+  /* Orange rule */
+  .rule { width: 44px; height: 3px; background: var(--strava); margin-bottom: 20px; }
+
+  /* Tags (title slide) */
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; justify-content: center; }
+  .tag  {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.62em; letter-spacing: 0.16em; text-transform: uppercase;
+    border: 1px solid rgba(245,240,232,0.3); color: var(--cream); padding: 4px 12px;
+  }
+
+  /* "In plain terms" callout */
+  .plain {
+    background: rgba(245,240,232,0.07); border-left: 3px solid var(--strava);
+    padding: 11px 16px; margin: 14px 0; border-radius: 0 2px 2px 0;
+  }
+  .plain-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.55em; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--strava); margin-bottom: 4px;
+  }
+  .plain p { font-size: 0.82em; color: var(--cream); margin: 0; line-height: 1.6; }
+
+  /* Feature cards (3-up) */
+  .feat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 20px; }
+  .feat-card { background: rgba(245,240,232,0.05); border: 1px solid rgba(245,240,232,0.13); padding: 18px 15px; }
+  .feat-card .icon { font-size: 1.3em; margin-bottom: 8px; }
+  .feat-card h3 { font-size: 0.82em; margin: 0 0 6px; }
+  .feat-card p  { font-size: 0.75em; color: var(--cream-dim); margin: 0; line-height: 1.5; }
+
+  /* Partner cards (2-up) */
+  .partner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+  .partner-card { background: rgba(245,240,232,0.05); border: 1px solid rgba(245,240,232,0.13); padding: 18px 16px; position: relative; }
+  .partner-card .brand { font-family: 'Barlow Condensed',sans-serif; font-size: 0.55em; letter-spacing: 0.22em; text-transform: uppercase; color: var(--strava); margin-bottom: 6px; }
+  .partner-card h3 { font-size: 0.88em; color: var(--cream); margin: 0 0 6px; }
+  .partner-card p  { font-size: 0.75em; color: var(--cream-dim); margin: 0; line-height: 1.5; }
+  .media-badge { position: absolute; top: 11px; right: 11px; font-family: 'Barlow Condensed',sans-serif; font-size: 0.52em; background: rgba(212,81,30,0.2); color: var(--strava); padding: 2px 7px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* Annotated code layout */
+  .anno { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; align-items: start; }
+  .anno-list { display: flex; flex-direction: column; gap: 10px; }
+  .anno-item { display: flex; gap: 9px; align-items: flex-start; }
+  .anno-num  {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 0.58em; letter-spacing: 0.06em;
+    background: var(--strava); color: var(--cream); padding: 2px 6px;
+    min-width: 20px; text-align: center; margin-top: 1px; flex-shrink: 0;
+  }
+  .anno-body h4 { font-family: 'Barlow Condensed',sans-serif; font-size: 0.76em; color: var(--cream); letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 2px; }
+  .anno-body p  { font-size: 0.72em; color: var(--cream-dim); line-height: 1.52; margin: 0; }
+
+  /* Code blocks */
+  .reveal pre {
+    background: var(--code-bg) !important;
+    border-left: 3px solid rgba(245,240,232,0.12);
+    border-radius: 0; box-shadow: none; margin: 10px 0; width: 100%;
+  }
+  .reveal pre code {
+    font-size: 0.7em; line-height: 1.72; padding: 13px 16px;
+    color: #c9d1d9; background: transparent !important; max-height: 340px;
+  }
+  .reveal code {
+    font-size: 0.8em; background: rgba(0,0,0,0.35); padding: 1px 5px;
+    color: #a5d6ff; border-radius: 2px;
+  }
+  /* Syntax colours */
+  .kw   { color: #ff7b72; } .str { color: #a5d6ff; }
+  .cm   { color: #6e7681; font-style: italic; }
+  .prop { color: #79c0ff; } .val { color: #d2a8ff; }
+  .tc   { color: #7ee787; } .at  { color: #e3b341; }
+  .hl   { background: rgba(212,81,30,0.16); display: block; margin: 0 -16px; padding: 0 16px; }
+
+  /* Two-col text layout */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 18px; }
+  .two-col h3 { font-size: 0.7em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--strava); margin-bottom: 8px; font-family: 'Barlow Condensed',sans-serif; }
+  .two-col ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+  .two-col li { font-size: 0.78em; color: var(--cream-dim); line-height: 1.5; padding-left: 14px; position: relative; }
+  .two-col li::before { content: '—'; position: absolute; left: 0; color: var(--strava); }
+
+  /* Palette swatches */
+  .palette { display: flex; height: 48px; width: 100%; max-width: 480px; margin-top: 18px; }
+  .swatch  { flex: 1; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 5px; font-family: 'Barlow Condensed',sans-serif; font-size: 0.52em; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 13px; margin-top: 18px; }
+  .step  { display: flex; gap: 13px; align-items: flex-start; padding: 12px 14px; background: rgba(245,240,232,0.04); border-left: 3px solid var(--strava); }
+  .step-num { font-family: 'Playfair Display',serif; font-size: 1.3em; color: var(--strava); min-width: 26px; line-height: 1.1; }
+  .step-body h3 { font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cream); margin: 0 0 2px; }
+  .step-body p  { font-size: 0.74em; color: var(--cream-dim); margin: 0; line-height: 1.5; }
+
+  /* Slide number + progress bar */
+  .reveal .slide-number { background: rgba(245,240,232,0.07); color: rgba(245,240,232,0.35); font-size: 12px; padding: 3px 8px; }
+  .reveal .progress     { background: rgba(245,240,232,0.1); }
+  .reveal .progress span{ background: var(--strava); }
+
+  .muted { color: var(--cream-dim); font-size: 0.7em; font-style: italic; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ── 1. TITLE ── -->
+<section class="title-slide">
+  <p class="label" style="text-align:center; margin-bottom:10px;">Arman Soleimani &nbsp;·&nbsp; Personal Website</p>
+  <h1>My Running Page</h1>
+  <div style="width:44px; height:3px; background:var(--strava); margin:14px auto 18px;"></div>
+  <p class="subtitle">A custom-designed section of my Quarto website built entirely inside a single {=html} block — full-screen video hero, brand partnership embeds, and a Strava CTA styled from scratch.</p>
+  <div class="tags">
+    <span class="tag">Quarto</span>
+    <span class="tag">Raw HTML Block</span>
+    <span class="tag">Custom CSS</span>
+    <span class="tag">GitHub Pages</span>
+    <span class="tag">Brand Partnerships</span>
+  </div>
+</section>
+
+<!-- ── 2. WHAT'S ON THE PAGE ── -->
+<section>
+  <div class="label">Overview</div>
+  <h2>What's on the Page</h2>
+  <div class="rule"></div>
+  <p class="muted">Three elements make it feel like an athlete hub rather than a standard Quarto content page.</p>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="icon">🎥</div>
+      <h3>Hero Video</h3>
+      <p>A looping clip that fills the entire top of the page — no side margins, no Quarto container constraints. Plays automatically and silently.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">⚡</div>
+      <h3>Strava Button</h3>
+      <p>A custom-styled link in Strava orange. Colors, font, and shadow manually coded to match Strava's brand — no component library used.</p>
+    </div>
+    <div class="feat-card">
+      <div class="icon">🏆</div>
+      <h3>Brand Partnerships</h3>
+      <p>Embedded Instagram post (Under Armour) and YouTube Short (GU Energy) — real media from real collaborations, displayed via each platform's embed API.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 3. PARTNERSHIPS ── -->
+<section>
+  <div class="label">Partnerships</div>
+  <h2>Two Brand Collaborations</h2>
+  <div class="rule"></div>
+  <div class="plain">
+    <div class="plain-label">The decision</div>
+    <p>Rather than describing partnerships in prose, I embedded the actual social posts — so the content speaks for itself in its original format.</p>
+  </div>
+  <div class="partner-grid">
+    <div class="partner-card">
+      <div class="media-badge">Instagram</div>
+      <div class="brand">Under Armour</div>
+      <h3>Oakland Half × UA Elite Team</h3>
+      <p>I was part of the Under Armour Elite Team for the Oakland Half Marathon. The post is embedded directly — showing the relationship in context, not just describing it in text.</p>
+    </div>
+    <div class="partner-card">
+      <div class="media-badge">YouTube</div>
+      <div class="brand">GU Energy</div>
+      <h3>Pace the Rainbow</h3>
+      <p>GU Energy featured me in their campaign. Embedded as a vertical Short (9:16) so it displays in its intended format — not a widescreen rectangle with black bars.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 4. _QUARTO.YML ── -->
+<section>
+  <div class="label">Configuration</div>
+  <h2>Adding the Page in _quarto.yml</h2>
+  <div class="rule"></div>
+  <div class="plain">
+    <div class="plain-label">The decision</div>
+    <p>The running page needed to appear in the shared navbar without inheriting the site's default content styles. Adding it to the nav is two lines — but <code>self-contained: false</code> keeps it linked to shared assets.</p>
+  </div>
+  <div class="anno">
+<pre><code><span class="kw">website</span>:
+  navbar:
+    left:
+      - href: index.qmd
+        text: About
+<span class="hl">      - href: running.qmd   <span class="cm"># adds Running to every nav</span>
+        text: Running</span>
+
+<span class="kw">format</span>:
+  html:
+    theme: [cosmo, brand]
+    <span class="prop">css</span>: <span class="val">styles.css</span>   <span class="cm"># Playfair + Barlow site-wide</span></code></pre>
+    <div class="anno-list">
+      <div class="anno-item"><span class="anno-num">1</span>
+        <div class="anno-body"><h4>Two lines in the nav</h4>
+        <p>Adding <code>running.qmd</code> here puts the Running link in the navbar on every page — no per-page configuration.</p></div>
+      </div>
+      <div class="anno-item"><span class="anno-num">2</span>
+        <div class="anno-body"><h4>theme: cosmo + brand</h4>
+        <p><code>cosmo</code> is the Bootstrap base; <code>brand</code> layers on top. <code>styles.css</code> imports the custom font pair used across the whole site.</p></div>
+      </div>
+      <div class="anno-item"><span class="anno-num">3</span>
+        <div class="anno-body"><h4>output-dir: docs</h4>
+        <p>Rendered files go to <code>docs/</code> — the folder GitHub Pages reads. Every push auto-deploys the live site.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 5. QMD FILE ── -->
+<section>
+  <div class="label">Source File</div>
+  <h2>The running.qmd File</h2>
+  <div class="rule"></div>
+  <div class="plain">
+    <div class="plain-label">The decision</div>
+    <p>Quarto would process the file as Markdown and strip custom HTML. Putting everything in one <code>{=html}</code> block tells Quarto to pass it straight to the browser untouched.</p>
+  </div>
+  <div class="anno">
+<pre><code><span class="cm">---</span>
+<span class="hl"><span class="prop">title</span>: <span class="str">""</span>              <span class="cm"># suppresses the auto &lt;h1&gt;</span></span>
+<span class="kw">format</span>:
+  html:
+    <span class="prop">self-contained</span>: <span class="val">false</span>
+<span class="cm">---</span>
+
+<span class="hl"><span class="tc">```{=html}</span></span>
+&lt;<span class="tc">style</span>&gt;
+  body { background-color: <span class="val">#2C4A2E</span>; }
+&lt;/<span class="tc">style</span>&gt;
+
+&lt;<span class="tc">div</span> <span class="at">class</span>=<span class="str">"hero-video-container"</span>&gt; ... &lt;/<span class="tc">div</span>&gt;
+&lt;<span class="tc">div</span> <span class="at">class</span>=<span class="str">"running-content"</span>&gt; ... &lt;/<span class="tc">div</span>&gt;
+<span class="hl"><span class="tc">```</span></span></code></pre>
+    <div class="anno-list">
+      <div class="anno-item"><span class="anno-num">1</span>
+        <div class="anno-body"><h4>title: ""</h4>
+        <p>Blank title suppresses the auto <code>&lt;h1&gt;</code> so the video hero fills the screen immediately — no heading gap above the fold.</p></div>
+      </div>
+      <div class="anno-item"><span class="anno-num">2</span>
+        <div class="anno-body"><h4>self-contained: false</h4>
+        <p>Keeps the page linked to shared <code>site_libs/</code> assets. Without this, the navbar and search break.</p></div>
+      </div>
+      <div class="anno-item"><span class="anno-num">3</span>
+        <div class="anno-body"><h4>CSS scoped to this page</h4>
+        <p>Styles inside the block only render in <code>running.html</code> — the dark green background doesn't leak to other pages on the site.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 6. FULL-BLEED VIDEO ── -->
+<section>
+  <div class="label">CSS Challenge</div>
+  <h2>Breaking Out of Quarto's Layout Grid</h2>
+  <div class="rule"></div>
+  <div class="plain">
+    <div class="plain-label">The problem</div>
+    <p>Quarto adds side margins to every page by default. To make the video go edge-to-edge, I zeroed out the grid columns and expanded the video div beyond its container.</p>
+  </div>
+  <div class="anno">
+<pre><code><span class="cm">/* Zero out Quarto's 4-column grid */</span>
+<span class="hl"><span class="prop">.page-columns</span> {
+  grid-template-columns: <span class="val">0 0 1fr 0</span> <span class="str">!important</span>;
+  padding-left: <span class="val">0</span> <span class="str">!important</span>;
+  padding-right: <span class="val">0</span> <span class="str">!important</span>;
+}</span>
+
+<span class="cm">/* Escape the container to full viewport width */</span>
+<span class="hl"><span class="prop">.hero-video-container</span> {
+  width: <span class="val">100vw</span>;
+  left: <span class="val">50%</span>;
+  transform: <span class="val">translateX(-50%)</span>;
+  height: <span class="val">60vh</span>;
+}</span>
+
+<span class="prop">video</span> { object-fit: <span class="val">cover</span>; }</code></pre>
+    <div class="anno-list">
+      <div class="anno-item"><span class="anno-num">1</span>
+        <div class="anno-body"><h4>grid-template-columns: 0 0 1fr 0</h4>
+        <p>Quarto's layout is a four-zone grid. Setting the outer three to <code>0</code> removes the side gutters so content reaches the edge.</p></div>
+      </div>
+      <div class="anno-item"><span class="anno-num">2</span>
+        <div class="anno-body"><h4>100vw + translateX(-50%)</h4>
+        <p>Sets width to the full browser window, then shifts left by 50% to re-center. The standard CSS escape from any constrained parent.</p></div>
+      </div>
+      <div class="anno-item"><span class="anno-num">3</span>
+        <div class="anno-body"><h4>object-fit: cover</h4>
+        <p>Scales the video to fill its box without distortion — same behavior as <code>background-size: cover</code> on an image.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 7. NAVBAR FIX ── -->
+<section>
+  <div class="label">CSS Challenge</div>
+  <h2>Keeping the Navbar Intact</h2>
+  <div class="rule"></div>
+  <div class="plain">
+    <div class="plain-label">The problem</div>
+    <p>Making the page dark green also turned the navbar green. A targeted CSS rule tells the navbar to keep its original color — everything else on the page still gets the green background.</p>
+  </div>
+  <div class="anno">
+<pre><code><span class="cm">/* Dark green for the whole page */</span>
+<span class="prop">body</span>, <span class="prop">.quarto-container</span>, <span class="prop">#quarto-content</span> {
+  background-color: <span class="val">#2C4A2E</span> <span class="str">!important</span>;
+}
+
+<span class="cm">/* Navbar rollback */</span>
+<span class="hl"><span class="prop">#quarto-header</span>,
+<span class="prop">#quarto-header *</span>,
+<span class="prop">.navbar</span>, <span class="prop">.nav-link</span> {
+  color: <span class="val">#343a40</span> <span class="str">!important</span>;
+}</span>
+
+<span class="prop">p</span>, <span class="prop">li</span>, <span class="prop">span</span> { color: <span class="val">#f5f0e8</span>; }
+
+<span class="prop">.running-content</span> {
+  max-width: <span class="val">600px</span>; margin: <span class="val">0 auto</span>;
+}</code></pre>
+    <div class="anno-list">
+      <div class="anno-item"><span class="anno-num">1</span>
+        <div class="anno-body"><h4>Why !important</h4>
+        <p>Bootstrap applies colors with high specificity — <code>!important</code> forces the override. Page-scoped, so it doesn't affect other pages.</p></div>
+      </div>
+      <div class="anno-item"><span class="anno-num">2</span>
+        <div class="anno-body"><h4>#quarto-header *</h4>
+        <p>The <code>*</code> catches every child — links, brand text, search icon — so none inherit the green from the body rule.</p></div>
+      </div>
+      <div class="anno-item"><span class="anno-num">3</span>
+        <div class="anno-body"><h4>.running-content</h4>
+        <p>Caps prose at 600px wide and scopes heading styles to this section — prevents accidental overrides elsewhere on the page.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 8. STRAVA BUTTON ── -->
+<section>
+  <div class="label">Design Detail</div>
+  <h2>The Strava Button</h2>
+  <div class="rule"></div>
+  <div class="plain">
+    <div class="plain-label">The approach</div>
+    <p>A regular HTML link styled with CSS to look like a Strava button — no library needed. Three things make it feel branded: the exact Strava orange, sharp corners, and a hard drop shadow.</p>
+  </div>
+  <div class="anno">
+<pre><code>&lt;<span class="tc">a</span> <span class="at">href</span>=<span class="str">"https://www.strava.com/athletes/53854051"</span>
+   <span class="at">target</span>=<span class="str">"_blank"</span>
+   <span class="at">class</span>=<span class="str">"strava-btn"</span>&gt;My Strava&lt;/<span class="tc">a</span>&gt;
+
+<span class="hl"><span class="prop">.strava-btn</span> {
+  background-color: <span class="val">#D4511E</span>;     <span class="cm">/* Strava's exact orange */</span>
+  color: <span class="val">white</span> <span class="str">!important</span>;
+  padding: <span class="val">12px 24px</span>;
+  border-radius: <span class="val">0</span>;               <span class="cm">/* sharp corners */</span>
+  box-shadow: <span class="val">3px 3px 0 #1C1915</span>; <span class="cm">/* zero-blur shadow */</span>
+  font-family: <span class="val">'Barlow Condensed'</span>;
+  letter-spacing: <span class="val">0.15em</span>;
+  text-transform: <span class="val">uppercase</span>;
+}</span></code></pre>
+    <div class="anno-list">
+      <div class="anno-item"><span class="anno-num">1</span>
+        <div class="anno-body"><h4>#D4511E</h4>
+        <p>Strava's exact brand color — the button reads as "Strava" before anyone reads the text.</p></div>
+      </div>
+      <div class="anno-item"><span class="anno-num">2</span>
+        <div class="anno-body"><h4>border-radius: 0</h4>
+        <p>Sharp corners match the athletic, direct tone of the page — rounded would feel out of place.</p></div>
+      </div>
+      <div class="anno-item"><span class="anno-num">3</span>
+        <div class="anno-body"><h4>box-shadow: 3px 3px 0</h4>
+        <p>Zero blur = hard-edged solid copy, not a soft glow. Gives the button a stamp-like, graphic quality.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 9. EMBEDS ── -->
+<section>
+  <div class="label">Third-Party Media</div>
+  <h2>Embedding Instagram &amp; YouTube</h2>
+  <div class="rule"></div>
+  <div class="plain">
+    <div class="plain-label">The approach</div>
+    <p>Each platform provides an official embed code to paste into any webpage. These only work inside a <code>{=html}</code> block — Quarto strips iframes from regular Markdown sections.</p>
+  </div>
+  <div class="anno">
+<pre><code><span class="cm">&lt;!-- Instagram: placeholder + runtime script --&gt;</span>
+<span class="hl">&lt;<span class="tc">blockquote</span>
+  <span class="at">class</span>=<span class="str">"instagram-media"</span>
+  <span class="at">data-instgrm-permalink</span>=<span class="str">"https://www.instagram.com/p/DWO0y71kTFG/"</span>
+  style=<span class="str">"width:100%; max-width:540px;"</span>&gt;
+&lt;/<span class="tc">blockquote</span>&gt;
+&lt;<span class="tc">script</span> <span class="at">async</span> <span class="at">src</span>=<span class="str">"//www.instagram.com/embed.js"</span>&gt;&lt;/<span class="tc">script</span>&gt;</span>
+
+<span class="cm">&lt;!-- YouTube: 9:16 portrait iframe --&gt;</span>
+<span class="hl">&lt;<span class="tc">iframe</span> <span class="at">width</span>=<span class="str">"315"</span> <span class="at">height</span>=<span class="str">"560"</span>
+  <span class="at">src</span>=<span class="str">"https://www.youtube.com/embed/vY5WS2eHcCo"</span>
+  <span class="at">allowfullscreen</span>&gt;&lt;/<span class="tc">iframe</span>&gt;</span></code></pre>
+    <div class="anno-list">
+      <div class="anno-item"><span class="anno-num">1</span>
+        <div class="anno-body"><h4>Instagram: placeholder + script</h4>
+        <p>The blockquote is a placeholder. <code>embed.js</code> loads on page open and replaces it with a live interactive post widget.</p></div>
+      </div>
+      <div class="anno-item"><span class="anno-num">2</span>
+        <div class="anno-body"><h4>315×560 portrait</h4>
+        <p>Exactly 9:16 — matches the YouTube Short format so it displays vertically, not as a widescreen box with black bars.</p></div>
+      </div>
+      <div class="anno-item"><span class="anno-num">3</span>
+        <div class="anno-body"><h4>Why {=html} is required</h4>
+        <p>Quarto removes <code>&lt;iframe&gt;</code> and <code>&lt;script&gt;</code> from Markdown sections. Inside a raw block, nothing gets stripped.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 10. DESIGN ── -->
+<section>
+  <div class="label">Visual Design</div>
+  <h2>Design Choices</h2>
+  <div class="rule"></div>
+  <div class="plain">
+    <div class="plain-label">The intent</div>
+    <p>A tight palette used consistently — Strava orange appears only on key actions so it always draws the eye. Forest green and cream do all the atmospheric work without competing for attention.</p>
+  </div>
+  <div class="palette">
+    <div class="swatch" style="background:#2C4A2E; color:rgba(245,240,232,0.5);">Forest<br>#2C4A2E</div>
+    <div class="swatch" style="background:#f5f0e8; color:#2C4A2E;">Cream<br>#F5F0E8</div>
+    <div class="swatch" style="background:#D4511E; color:var(--cream);">Strava<br>#D4511E</div>
+    <div class="swatch" style="background:#1C1915; color:rgba(245,240,232,0.4);">Ink<br>#1C1915</div>
+  </div>
+  <div class="two-col">
+    <div>
+      <h3>Typography — styles.css</h3>
+      <ul>
+        <li><strong>Playfair Display</strong> — h1/h2/h3; editorial, magazine quality</li>
+        <li><strong>Barlow Condensed</strong> — body, labels, buttons; narrow and athletic</li>
+        <li>Wide letter-spacing on uppercase labels throughout</li>
+        <li>Defined once in <code>styles.css</code>, inherited by all pages</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Why These Choices</h3>
+      <ul>
+        <li>Forest green = outdoors and endurance without a cliché sports color</li>
+        <li>Cream instead of white softens contrast — warmer overall tone</li>
+        <li>One accent color means it always stands out — no competition</li>
+        <li>Sharp corners throughout reinforce a direct, confident tone</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── 11. TAKEAWAYS ── -->
+<section>
+  <div class="label">Summary</div>
+  <h2>What This Page Demonstrates</h2>
+  <div class="rule"></div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Full design control inside Quarto's structure</h3>
+        <p>The shared navbar and deployment pipeline come from <code>_quarto.yml</code>. The <code>{=html}</code> block handles everything visible — the two layers don't interfere.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>CSS overrides as the escape hatch</h3>
+        <p>The grid override, container-escape technique, and navbar rollback are three targeted patches — nothing is blanket-reset, so the rest of the site is unaffected.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>Content-first framing</h3>
+        <p>Every design decision — the palette, portrait embed dimensions, sharp button corners — was made to serve the brand partnerships, not to demonstrate complexity.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-body">
+        <h3>Personal + professional in one page</h3>
+        <p>Under Armour and GU Energy partnerships sit alongside a live Strava link — portfolio piece and active athlete hub in the same place.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    backgroundTransition: 'fade',
+    controls: true,
+    progress: true,
+    center: false,
+    width: 1280,
+    height: 720,
+    margin: 0.06,
+  });
+</script>
+</body>
+</html>

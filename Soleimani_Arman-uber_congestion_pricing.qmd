@@ -1,0 +1,162 @@
+---
+title: "A/B Testing Uber Pricing in NYC's Congestion Zone"
+subtitle: "How to measure what riders will actually tolerate"
+author: "Arman Soleimani"
+date: "MGTA 479 · 2026"
+format:
+  revealjs:
+    embed-resources: true
+    theme: dark
+    slide-number: c/t
+    transition: slide
+    background-transition: fade
+    footer: "A/B Testing Uber Pricing · Arman Soleimani · 2026"
+---
+
+## The Setup
+
+In January 2025, NYC started charging tolls on every vehicle entering Manhattan below 60th Street. For Uber, that meant a **$1.50 congestion surcharge per trip** — passed directly to riders.
+
+::: columns
+::: {.column width="33%"}
+**What changed**
+
+A forced price increase — every Uber trip into lower Manhattan suddenly cost $1.50 more, overnight.
+:::
+::: {.column width="33%"}
+**What we observed**
+
+Despite higher prices, trip volume in the congestion zone stayed high. Riders kept riding.
+:::
+::: {.column width="33%"}
+**The opportunity**
+
+If riders absorbed a $1.50 surcharge without flinching — could Uber raise base fares further?
+:::
+:::
+
+## Why Not Just Look at What Happened?
+
+The congestion policy gave us useful evidence — but observational data has limits. To *safely* change prices further, you need a controlled test.
+
+| Approach | What you learn | Good enough to act on? |
+|---|---|---|
+| Before/after trip data | Demand held up after the surcharge | Maybe — confounded by season, events |
+| Congestion zone vs. outer boroughs | Zone-specific price effect | Better — but zones differ in other ways |
+| **Randomized A/B test** | Exactly how *this* price affects *these* riders | **Yes — cleanest signal for a decision** |
+
+> Observational data tells you what happened. An A/B test tells you what **caused** it — and what will happen if you do it again, intentionally.
+
+## What Is A/B Testing?
+
+Split your users randomly into two groups. Give each a different experience. Measure what changes. Decide based on the difference.
+
+::: columns
+::: {.column width="48%"}
+**Group A — Control**
+
+- Standard Uber fares
+- No change from today
+- Sets the baseline to compare against
+:::
+::: {.column width="48%"}
+**Group B — Treatment**
+
+- Slightly higher base fare in the congestion zone
+- Everything else identical
+- Reveals how riders respond
+:::
+:::
+
+Because assignment is **random**, any difference in behavior between the two groups can only be explained by the price change — not by who the riders are or when they travel.
+
+## Designing the Test
+
+Three decisions matter before you start.
+
+**01 — What to test**
+A 5% base fare increase on trips starting in the Manhattan congestion zone. Small enough to limit downside; large enough to detect a real signal.
+
+**02 — How to split users**
+Randomly assign by **user ID** — not by time or location. This prevents the same person from seeing different prices on different days, which would confuse the measurement.
+
+**03 — How long to run it**
+At least **4–6 weeks**. Short tests get distorted by day-of-week patterns and weather. Long enough for riders to adapt their behavior — not just react to novelty.
+
+## What to Measure
+
+Not all metrics are equal. You need a **primary metric** that defines success, and **guardrail metrics** that flag if something is breaking.
+
+| Type | Metric | Why it matters |
+|---|---|---|
+| Primary | Revenue per rider | Are we actually making more? |
+| Primary | Trip completion rate | Are riders finishing rides at the same rate? |
+| Guardrail | Cancellation rate | Price shock visible at checkout? |
+| Guardrail | 30-day retention | Are riders quietly leaving over time? |
+| Competitive | Lyft usage in zone | Are riders switching platforms, not just stopping? |
+
+## What the Congestion Data Already Tells Us
+
+The January 2025 surcharge was, in effect, a real-world price test — one we can use to set expectations for the A/B test.
+
+**Measured price elasticity: ε = −0.135**
+
+A 1% price increase → 0.135% fewer trips. Demand is highly inelastic.
+
+Compare to airline tickets (≈ −1.2) where a 1% increase causes a 1.2% drop. Manhattan Uber is far stickier.
+
+**What this means for the A/B test:**
+
+- We expect a 5% fare increase to reduce trips by roughly 0.7%
+- Revenue should increase for Group B
+- If we see a much bigger drop, something has changed — the A/B test catches that *before* we commit
+
+## Reading the Results
+
+After 4–6 weeks, two things need to be true before you act.
+
+::: columns
+::: {.column width="48%"}
+**Is the difference real?**
+*Statistical significance*
+
+Did we collect enough data that the result isn't just noise? With millions of trips per month, this threshold is reached quickly.
+
+*Standard threshold: p < 0.05*
+:::
+::: {.column width="48%"}
+**Does the difference matter?**
+*Practical significance*
+
+A real result might still be too small to act on. A 0.01% revenue increase isn't worth the operational complexity of changing the pricing model.
+
+*Set a minimum threshold before the test: e.g., at least 3% revenue uplift*
+:::
+:::
+
+> Both boxes need to be checked. Statistical significance without practical significance is just noise that survived the math.
+
+## Making the Call
+
+At the end of the test, you're in one of three situations.
+
+**Ship it** — Revenue up, trip volume held, guardrail metrics clean.
+Roll the increase out to all riders in the congestion zone.
+
+**Iterate** — Revenue up but cancellations also rose.
+Try a smaller increase (3%) or test different framing — "congestion fee" vs. a silent base fare change.
+
+**Don't ship** — Trip volume dropped more than expected, or retention fell.
+Elasticity in practice is worse than the model predicted. Hold prices flat and revisit.
+
+The whole point of the test: a "don't ship" result costs almost nothing — only a small share of riders saw the higher price, for a few weeks, with no permanent change.
+
+## Key Takeaways
+
+**01** — Congestion pricing created a natural signal, but not a safe enough one to act on alone. An A/B test confirms whether the finding holds when Uber *intentionally* raises prices.
+
+**02** — A/B testing turns a risky pricing decision into a measured one. You expose a small group, measure the real impact, and then decide — not the other way around.
+
+**03** — Watch the guardrail metrics, not just the headline number. Revenue can rise in the short run while retention quietly deteriorates.
+
+**04** — The value of the test is the option to stop. If results are worse than expected, you've learned something important at minimal cost — before committing to a change affecting millions of trips a month.

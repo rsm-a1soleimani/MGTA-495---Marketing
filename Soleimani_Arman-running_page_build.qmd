@@ -1,0 +1,267 @@
+---
+title: "My Running Page"
+subtitle: "Building a custom section inside a Quarto website"
+author: "Arman Soleimani"
+format:
+  revealjs:
+    embed-resources: true
+    theme: dark
+    slide-number: c/t
+    transition: slide
+    background-transition: fade
+    footer: "Arman Soleimani · Running Page Build"
+---
+
+## What's on the Page
+
+Three elements make it feel like an athlete hub rather than a standard Quarto content page.
+
+::: columns
+::: {.column width="33%"}
+**🎥 Hero Video**
+
+A looping clip that fills the entire top of the page — no side margins. Plays automatically and silently.
+:::
+::: {.column width="33%"}
+**⚡ Strava Button**
+
+A custom-styled link in Strava orange linking to my athlete profile. Colors and shadow manually coded to match the brand.
+:::
+::: {.column width="33%"}
+**🏆 Brand Partnerships**
+
+Embedded Instagram post (Under Armour) and YouTube Short (GU Energy) — real media from real collaborations.
+:::
+:::
+
+## Two Brand Collaborations
+
+Rather than describing partnerships in prose, I embedded the actual social posts — so the content speaks for itself.
+
+::: columns
+::: {.column width="48%"}
+**Under Armour · Instagram**
+
+Oakland Half × UA Elite Team
+
+I was part of the Under Armour Elite Team for the Oakland Half Marathon. The post is embedded directly — showing the relationship in context.
+:::
+::: {.column width="48%"}
+**GU Energy · YouTube**
+
+Pace the Rainbow
+
+GU Energy featured me in their campaign. Embedded as a vertical Short (9:16) so it displays in the intended format — not a widescreen rectangle.
+:::
+:::
+
+## Adding the Page in _quarto.yml
+
+The running page needed to appear in the shared navbar without inheriting the site's default content styles.
+
+```yaml
+website:
+  navbar:
+    left:
+      - href: index.qmd
+        text: About
+      - href: running.qmd   # adds Running to every page's nav
+        text: Running
+
+format:
+  html:
+    theme: [cosmo, brand]
+    css: styles.css         # Playfair + Barlow loaded site-wide
+```
+
+**Two lines** is all it takes for the Running link to appear in the navbar on every page automatically.
+
+`styles.css` imports Playfair Display and Barlow Condensed — the font pair used across the whole site.
+
+## The running.qmd File
+
+The entire running page lives in one `{=html}` passthrough block — so Quarto passes it straight to the browser untouched.
+
+```yaml
+---
+title: ""           # suppresses the auto-generated <h1>
+format:
+  html:
+    self-contained: false
+---
+```
+
+````
+```{=html}
+<style>
+  /* page-scoped CSS — only affects running.html */
+  body { background-color: #2C4A2E; }
+</style>
+
+<div class="hero-video-container"> ... </div>
+<div class="running-content"> ... </div>
+```
+````
+
+- **Blank title** — suppresses Quarto's auto `<h1>` so the video fills immediately
+- **self-contained: false** — keeps shared `site_libs/` assets linked; without this, the navbar breaks
+- **Styles stay on this page only** — the dark green doesn't leak to other pages
+
+## Breaking Out of Quarto's Layout Grid
+
+Quarto adds side margins to every page by default. To make the video go edge-to-edge, I zeroed out the grid and used a CSS escape on the video div.
+
+```css
+/* Zero out Quarto's 4-column grid */
+.page-columns {
+  grid-template-columns: 0 0 1fr 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Expand the video to full viewport width */
+.hero-video-container {
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);  /* re-center it */
+  height: 60vh;
+}
+
+/* Fill the box without distorting the video */
+video {
+  object-fit: cover;  /* same as background-size: cover */
+}
+```
+
+Setting all non-content grid columns to `0` removes the gutters. `100vw + translateX(-50%)` is the standard CSS escape from any constrained parent.
+
+## Keeping the Navbar Intact
+
+Making the page dark green turned the navbar green too. A targeted rule tells the navbar to keep its original color.
+
+```css
+/* Dark green background for the whole page */
+body, .quarto-container, #quarto-content {
+  background-color: #2C4A2E !important;
+}
+
+/* Rollback: navbar keeps its own color */
+#quarto-header,
+#quarto-header *,   /* catches every child element */
+.navbar, .nav-link {
+  color: #343a40 !important;
+}
+
+/* Text on the green page: cream */
+p, li, span { color: #f5f0e8; }
+
+/* Content capped at readable width */
+.running-content { max-width: 600px; margin: 0 auto; }
+```
+
+`!important` is needed because Bootstrap applies colors with high specificity. `#quarto-header *` catches every descendent — links, brand text, icons — so none inherit the green.
+
+## The Strava Button
+
+A regular HTML link styled with CSS to look like a Strava button — no library needed.
+
+```html
+<a href="https://www.strava.com/athletes/53854051"
+   target="_blank"
+   class="strava-btn">My Strava</a>
+```
+
+```css
+.strava-btn {
+  background-color: #D4511E;      /* Strava's exact brand orange */
+  color: white !important;
+  padding: 12px 24px;
+  border-radius: 0;               /* sharp corners — intentional */
+  box-shadow: 3px 3px 0 #1C1915; /* hard-edged, zero-blur shadow */
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+```
+
+- **#D4511E** — Strava's exact brand color; the button reads as "Strava" before anyone reads the text
+- **border-radius: 0** — sharp corners match the athletic, direct tone of the page
+- **box-shadow: 3px 3px 0** — zero blur = hard-edged stamp effect, not a soft glow
+
+## Embedding Instagram & YouTube
+
+Each platform provides an official embed code to copy into any webpage. These only work inside a `{=html}` block — Quarto strips iframes from regular Markdown sections.
+
+```html
+<!-- Instagram: placeholder replaced by embed.js at runtime -->
+<blockquote
+  class="instagram-media"
+  data-instgrm-permalink="https://www.instagram.com/p/DWO0y71kTFG/"
+  data-instgrm-version="14"
+  style="width:100%; max-width:540px;">
+</blockquote>
+<script async src="//www.instagram.com/embed.js"></script>
+
+<!-- YouTube: iframe at 9:16 portrait dimensions -->
+<iframe
+  width="315" height="560"
+  src="https://www.youtube.com/embed/vY5WS2eHcCo"
+  allowfullscreen>
+</iframe>
+```
+
+- **Instagram** — `embed.js` scans the DOM and replaces the blockquote with a live widget
+- **315×560** — exactly 9:16, matching the YouTube Short's vertical format
+- **{=html} required** — Quarto removes iframes from Markdown for security; the raw block bypasses this
+
+## Design Choices
+
+A tight palette used consistently — the Strava orange appears only on key actions so it always draws the eye.
+
+::: columns
+::: {.column width="55%"}
+| Swatch | Hex | Role |
+|---|---|---|
+| Forest green | #2C4A2E | Page background |
+| Cream | #F5F0E8 | All text |
+| Strava orange | #D4511E | CTAs and accents |
+| Ink | #1C1915 | Shadows and borders |
+
+**Typography**
+
+- **Playfair Display** — headings; editorial, magazine feel
+- **Barlow Condensed** — body, labels, buttons; narrow and athletic
+:::
+::: {.column width="42%"}
+**Why these choices?**
+
+- Forest green = outdoors and endurance without being a cliché sports color
+- Cream instead of white softens contrast — warmer and easier to read
+- One accent color means it always stands out; no competition for attention
+- Sharp corners throughout reinforce a direct, confident tone
+:::
+:::
+
+## What This Page Demonstrates
+
+::: columns
+::: {.column width="48%"}
+**01 — Full design control inside Quarto's structure**
+
+The shared navbar and deployment pipeline come from `_quarto.yml`. The `{=html}` block handles everything visible — the two layers don't interfere.
+
+**02 — CSS overrides as the escape hatch**
+
+The grid override, container-escape technique, and navbar rollback are three targeted patches — nothing is blanket-reset.
+:::
+::: {.column width="48%"}
+**03 — Content-first framing**
+
+Every design decision — the palette, portrait embed dimensions, sharp button corners — was made to serve the partnerships and brand identity, not to demonstrate complexity.
+
+**04 — Personal + professional in one page**
+
+Under Armour and GU Energy partnerships sit alongside a live Strava link — the page functions as both a portfolio piece and an active athlete hub.
+:::
+:::

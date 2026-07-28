@@ -250,7 +250,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="the-data">The Data</h2>
 <p>The data come in two files. <code>maxdiff_design_and_choices.csv</code> records every item shown on every screen for every respondent, along with the response (<code>1</code> = picked best, <code>-1</code> = picked worst, <code>0</code> = shown but not chosen). <code>maxdiff_item_labels.csv</code> maps the integer item codes to full course names.</p>
 <p><strong>Note on the design.</strong> The survey has two kinds of tasks per respondent: Tasks 1–8 are the standard 4-item MaxDiff screens (one best pick, one worst pick). Tasks 9–15 appear to be paired binary comparisons between a single class and an anchor item (coded as item 11, not a real course). For all analyses below we focus on tasks 1–8 only, where the MaxDiff model directly applies.</p>
-<div id="f4c7ca68" class="cell" data-execution_count="3">
+<div id="a8de984a" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>Respondents (N):          85
 Tasks per respondent (T): 8
@@ -258,12 +258,12 @@ Items per task (J):       4
 Total items in study:     10</code></pre>
 </div>
 </div>
-<div id="85373ccc" class="cell" data-execution_count="4">
+<div id="ac834eee" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
 <pre><code>Tasks passing sanity check: 680 / 680 (100.0%)</code></pre>
 </div>
 </div>
-<div id="651250d2" class="cell" data-execution_count="5">
+<div id="bb6dcf69" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Exposure counts per item:
@@ -293,7 +293,7 @@ Mean: 272.0  |  Std: 3.4</code></pre>
 <li><span class="math inline">\(\text{score}_j = \%\text{best}_j - \%\text{worst}_j\)</span></li>
 </ul>
 <p>A score near +1 means the course is almost always the best in its set; near −1 means it is almost always the worst; near 0 means it is a middle-of-the-road choice. The counts score is fast and transparent but ignores the composition of each screen — the same item paired with strong competitors versus weak ones looks the same.</p>
-<div id="1aabfea2" class="cell" data-execution_count="7">
+<div id="af35c11b" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code> Rank               Course  Shown  Best  Worst % Best % Worst  Score
     1  Marketing Analytics    274   147     12  53.6%    4.4%  0.493
@@ -308,7 +308,7 @@ Mean: 272.0  |  Std: 3.4</code></pre>
    10 Analytics Consulting    267    33    111  12.4%   41.6% -0.292</code></pre>
 </div>
 </div>
-<div id="a9882b21" class="cell" data-execution_count="8">
+<div id="3e632ec8" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -330,7 +330,7 @@ Mean: 272.0  |  Std: 3.4</code></pre>
 <li><p><strong>Worst pick</strong>: From the <em>remaining</em> 3 items (the best item is removed), which was picked worst? Choosing a worst item from a set is equivalent to choosing the <em>best</em> item using <em>negated</em> utilities: <span class="math display">\[P(\text{worst} = c \mid \text{best} = b) = \frac{\exp(-\beta_c)}{\exp(-\beta_a) + \exp(-\beta_c) + \exp(-\beta_d)}\]</span></p></li>
 </ol>
 <p>Because the soft-max is invariant to adding a constant to all <span class="math inline">\(\beta\)</span>’s, the model is only identified up to a location shift. We fix this by setting <span class="math inline">\(\beta_1 = 0\)</span> (item 1 = “AI Math” as the reference) and estimating <span class="math inline">\(\beta_2, \ldots, \beta_{10}\)</span> — 9 free parameters. A positive <span class="math inline">\(\hat\beta_j\)</span> means course <span class="math inline">\(j\)</span> is preferred over the reference; a negative value means it is less preferred.</p>
-<div id="49c05697" class="cell" data-execution_count="9">
+<div id="c3ffb36f" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-stdout">
 <pre><code>Total MNL observations (2 per task): 1360
 Free parameters to estimate:          9  (β₂ … β₁₀, with β₁ = 0)</code></pre>
@@ -348,7 +348,7 @@ Free parameters to estimate:          9  (β₂ … β₁₀, with β₁ = 0)</c
 \,\Big]
 \]</span></p>
 <p>where <span class="math inline">\(j^*_b\)</span> is the best-picked item and <span class="math inline">\(j^*_w\)</span> is the worst-picked item in each task. We use the <code>logsumexp</code> function for numerical stability.</p>
-<div id="fc4334f9" class="cell" data-execution_count="10">
+<div id="5f8533bc" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_lik(beta_free, tasks_items, tasks_best, tasks_worst):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">    MaxDiff MNL log-likelihood (vectorized over all tasks at once).</span></span>
@@ -372,7 +372,7 @@ Free parameters to estimate:          9  (β₂ … β₁₀, with β₁ = 0)</c
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">float</span>(best_ll.<span class="bu">sum</span>() <span class="op">+</span> worst_ll.<span class="bu">sum</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="53a81101" class="cell" data-execution_count="12">
+<div id="2e3c3f28" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-stdout">
 <pre><code>MLE Results (sorted by preference share):
 
@@ -388,7 +388,7 @@ Free parameters to estimate:          9  (β₂ … β₁₀, with β₁ = 0)</c
   10.  Analytics Consulting    β̂ = -0.239  SE = 0.001  Share = 0.044</code></pre>
 </div>
 </div>
-<div id="3ee1d20e" class="cell" data-execution_count="13">
+<div id="5293f81b" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -397,7 +397,7 @@ Free parameters to estimate:          9  (β₂ … β₁₀, with β₁ = 0)</c
 </div>
 </div>
 </div>
-<div id="be52bf4f" class="cell" data-execution_count="14">
+<div id="c00cdae3" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-stdout">
 <pre><code>MLE vs Counts ranking comparison:
 
@@ -420,7 +420,7 @@ Free parameters to estimate:          9  (β₂ … β₁₀, with β₁ = 0)</c
 <p>Bayesian estimation treats <span class="math inline">\(\boldsymbol{\beta}\)</span> as a random variable and combines the likelihood with a prior distribution. We use a weakly informative prior <span class="math inline">\(\boldsymbol{\beta} \sim N(\mathbf{0},\, 10 \cdot I)\)</span> (standard deviation <span class="math inline">\(\approx 3.2\)</span> on each parameter), which is diffuse enough to let the data speak but keeps the sampler from wandering to implausibly large values.</p>
 <p>The posterior is: <span class="math display">\[\pi(\boldsymbol{\beta} \mid \mathbf{y}) \;\propto\; L(\boldsymbol{\beta}) \cdot \pi(\boldsymbol{\beta})\]</span></p>
 <p>We sample from this posterior using the <strong>random-walk Metropolis-Hastings</strong> algorithm. At each step, we propose a small random jump, compute the change in log-posterior, and accept with probability <span class="math inline">\(\min(1, e^{\Delta \log p})\)</span>.</p>
-<div id="239201ca" class="cell" data-execution_count="15">
+<div id="8c470fe6" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> log_posterior(beta_free, tasks_items, tasks_best, tasks_worst):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Log-posterior = log-likelihood + log-prior."""</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    ll         <span class="op">=</span> log_lik(beta_free, tasks_items, tasks_best, tasks_worst)</span>
@@ -453,7 +453,7 @@ Free parameters to estimate:          9  (β₂ … β₁₀, with β₁ = 0)</c
 <span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> draws, n_acc <span class="op">/</span> n_iter</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="a6e65c64" class="cell" data-execution_count="16">
+<div id="07018b0e" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-stdout">
 <pre><code>Tuning step size (500-iteration pilot runs):
   step = 0.05  |  acceptance = 51.00%
@@ -463,14 +463,14 @@ Free parameters to estimate:          9  (β₂ … β₁₀, with β₁ = 0)</c
   step = 0.15  |  acceptance = 7.00%</code></pre>
 </div>
 </div>
-<div id="10bd4eef" class="cell" data-execution_count="17">
+<div id="5392f8b8" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Final acceptance rate: 20.16%
 Posterior draws kept:  15,000  (after discarding 5,000 burn-in)</code></pre>
 </div>
 </div>
-<div id="fc0b5119" class="cell" data-execution_count="18">
+<div id="f6ee5327" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -480,7 +480,7 @@ Posterior draws kept:  15,000  (after discarding 5,000 burn-in)</code></pre>
 </div>
 </div>
 <p>The trace plots show the characteristic “fuzzy caterpillar” shape after the burn-in period, indicating the chain has converged and is mixing well. There is no long-term upward or downward drift, and the chain revisits the same region repeatedly — both signs of a healthy sampler.</p>
-<div id="de2471cb" class="cell" data-execution_count="20">
+<div id="79438b7f" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-stdout">
 <pre><code>Bayesian Results (sorted by posterior mean share):
 
@@ -496,7 +496,7 @@ Posterior draws kept:  15,000  (after discarding 5,000 burn-in)</code></pre>
   10.  Analytics Consulting    β = -0.232  95% CI [-0.511, +0.061]  Share = 0.043</code></pre>
 </div>
 </div>
-<div id="dce3af8a" class="cell" data-execution_count="21">
+<div id="a29f2c79" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -505,7 +505,7 @@ Posterior draws kept:  15,000  (after discarding 5,000 burn-in)</code></pre>
 </div>
 </div>
 </div>
-<div id="90de36d6" class="cell" data-execution_count="22">
+<div id="ce343cd9" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-stdout">
 <pre><code>Comparison: Bayesian vs MLE (items 2–10, β₁ fixed at 0)
 
@@ -526,7 +526,7 @@ Posterior draws kept:  15,000  (after discarding 5,000 burn-in)</code></pre>
 </section>
 <section id="comparing-the-three-methods" class="level2">
 <h2 class="anchored" data-anchor-id="comparing-the-three-methods">Comparing the Three Methods</h2>
-<div id="5c16594e" class="cell" data-execution_count="23">
+<div id="f87d2822" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-stdout">
 <pre><code>Side-by-side comparison of all three methods (sorted by MLE rank):
 
@@ -544,7 +544,7 @@ Posterior draws kept:  15,000  (after discarding 5,000 burn-in)</code></pre>
   Analytics Consulting          -0.292      10      0.044      10        0.043      10</code></pre>
 </div>
 </div>
-<div id="2a8d31fa" class="cell" data-execution_count="24">
+<div id="9f17936b" class="cell" data-execution_count="24">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
