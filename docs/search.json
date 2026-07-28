@@ -299,5 +299,152 @@
     "title": "MaxDiff Analysis of MSBA Class Preferences",
     "section": "Discussion",
     "text": "Discussion\nSubstantive findings. The MaxDiff survey reveals a fairly clear preference ordering among MSBA core courses. Technical courses with immediate, marketable skill payoffs — particularly those centered on analytics, machine learning applications, and data infrastructure — rank highly. This likely reflects students’ awareness that job recruiters prize demonstrable technical skills. Courses that are more process-oriented or that fulfill general requirements (the Capstone, consulting) rank lower, though it is worth noting that “least preferred” in a MaxDiff study still means the course is preferred over nothing — it is just overshadowed by its peers.\nMethodological takeaways.\n\nCounts analysis is the quickest tool in the toolkit. It requires no modeling assumptions and is easy to explain to a non-technical audience. Use it for an executive dashboard or as a sanity check before fitting a model.\nMLE MNL is the right choice when you need rigorous point estimates with classical standard errors and want to report a single number. It explicitly models the competitive choice process and is more efficient than counts when choice sets vary in difficulty.\nBayesian MNL shines when you need uncertainty on derived quantities (preference shares, “what-if” simulations, individual-level predictions) or when you plan to extend the model — for example, to a hierarchical model that estimates both population-level preferences and individual-level variation.\n\nCaveats. The survey was administered to a self-selected sample of MSBA students; results may not generalize to future cohorts or to students with different backgrounds. Preferences are also likely influenced by each student’s position in the program (a first-year has not yet taken the advanced courses and may rate them differently than a second-year who has), by prior coursework, and by perceived career relevance. The MaxDiff design used here is also aggregate-level — it estimates a single set of utilities for the whole group rather than individual-level preferences, which would require a hierarchical Bayesian model.\nNext steps. With more time, I would fit a hierarchical (mixed) MNL to estimate individual-level utilities, which would let us segment students by their preference profiles. It would also be interesting to correlate estimated utilities with observable student characteristics (prior work experience, intended career path) to understand why preferences differ across students."
+  },
+  {
+    "objectID": "Soleimani_Arman-uber_congestion_pricing.html",
+    "href": "Soleimani_Arman-uber_congestion_pricing.html",
+    "title": "A/B Testing Uber Pricing in NYC’s Congestion Zone",
+    "section": "",
+    "text": "In January 2025, NYC started charging tolls on every vehicle entering Manhattan below 60th Street. For Uber, that meant a $1.50 congestion surcharge per trip — passed directly to riders.\n\n\nWhat changed\nA forced price increase — every Uber trip into lower Manhattan suddenly cost $1.50 more, overnight.\n\nWhat we observed\nDespite higher prices, trip volume in the congestion zone stayed high. Riders kept riding.\n\nThe opportunity\nIf riders absorbed a $1.50 surcharge without flinching — could Uber raise base fares further?"
+  },
+  {
+    "objectID": "Soleimani_Arman-uber_congestion_pricing.html#the-setup",
+    "href": "Soleimani_Arman-uber_congestion_pricing.html#the-setup",
+    "title": "A/B Testing Uber Pricing in NYC’s Congestion Zone",
+    "section": "",
+    "text": "In January 2025, NYC started charging tolls on every vehicle entering Manhattan below 60th Street. For Uber, that meant a $1.50 congestion surcharge per trip — passed directly to riders.\n\n\nWhat changed\nA forced price increase — every Uber trip into lower Manhattan suddenly cost $1.50 more, overnight.\n\nWhat we observed\nDespite higher prices, trip volume in the congestion zone stayed high. Riders kept riding.\n\nThe opportunity\nIf riders absorbed a $1.50 surcharge without flinching — could Uber raise base fares further?"
+  },
+  {
+    "objectID": "Soleimani_Arman-uber_congestion_pricing.html#why-not-just-look-at-what-happened",
+    "href": "Soleimani_Arman-uber_congestion_pricing.html#why-not-just-look-at-what-happened",
+    "title": "A/B Testing Uber Pricing in NYC’s Congestion Zone",
+    "section": "Why Not Just Look at What Happened?",
+    "text": "Why Not Just Look at What Happened?\nThe congestion policy gave us useful evidence — but observational data has limits. To safely change prices further, you need a controlled test.\n\n\n\n\n\n\n\n\nApproach\nWhat you learn\nGood enough to act on?\n\n\n\n\nBefore/after trip data\nDemand held up after the surcharge\nMaybe — confounded by season, events\n\n\nCongestion zone vs. outer boroughs\nZone-specific price effect\nBetter — but zones differ in other ways\n\n\nRandomized A/B test\nExactly how this price affects these riders\nYes — cleanest signal for a decision\n\n\n\n\nObservational data tells you what happened. An A/B test tells you what caused it — and what will happen if you do it again, intentionally."
+  },
+  {
+    "objectID": "Soleimani_Arman-uber_congestion_pricing.html#what-is-ab-testing",
+    "href": "Soleimani_Arman-uber_congestion_pricing.html#what-is-ab-testing",
+    "title": "A/B Testing Uber Pricing in NYC’s Congestion Zone",
+    "section": "What Is A/B Testing?",
+    "text": "What Is A/B Testing?\nSplit your users randomly into two groups. Give each a different experience. Measure what changes. Decide based on the difference.\n\n\nGroup A — Control\n\nStandard Uber fares\nNo change from today\nSets the baseline to compare against\n\n\nGroup B — Treatment\n\nSlightly higher base fare in the congestion zone\nEverything else identical\nReveals how riders respond\n\n\n\nBecause assignment is random, any difference in behavior between the two groups can only be explained by the price change — not by who the riders are or when they travel."
+  },
+  {
+    "objectID": "Soleimani_Arman-uber_congestion_pricing.html#designing-the-test",
+    "href": "Soleimani_Arman-uber_congestion_pricing.html#designing-the-test",
+    "title": "A/B Testing Uber Pricing in NYC’s Congestion Zone",
+    "section": "Designing the Test",
+    "text": "Designing the Test\nThree decisions matter before you start.\n01 — What to test A 5% base fare increase on trips starting in the Manhattan congestion zone. Small enough to limit downside; large enough to detect a real signal.\n02 — How to split users Randomly assign by user ID — not by time or location. This prevents the same person from seeing different prices on different days, which would confuse the measurement.\n03 — How long to run it At least 4–6 weeks. Short tests get distorted by day-of-week patterns and weather. Long enough for riders to adapt their behavior — not just react to novelty."
+  },
+  {
+    "objectID": "Soleimani_Arman-uber_congestion_pricing.html#what-to-measure",
+    "href": "Soleimani_Arman-uber_congestion_pricing.html#what-to-measure",
+    "title": "A/B Testing Uber Pricing in NYC’s Congestion Zone",
+    "section": "What to Measure",
+    "text": "What to Measure\nNot all metrics are equal. You need a primary metric that defines success, and guardrail metrics that flag if something is breaking.\n\n\n\n\n\n\n\n\nType\nMetric\nWhy it matters\n\n\n\n\nPrimary\nRevenue per rider\nAre we actually making more?\n\n\nPrimary\nTrip completion rate\nAre riders finishing rides at the same rate?\n\n\nGuardrail\nCancellation rate\nPrice shock visible at checkout?\n\n\nGuardrail\n30-day retention\nAre riders quietly leaving over time?\n\n\nCompetitive\nLyft usage in zone\nAre riders switching platforms, not just stopping?"
+  },
+  {
+    "objectID": "Soleimani_Arman-uber_congestion_pricing.html#what-the-congestion-data-already-tells-us",
+    "href": "Soleimani_Arman-uber_congestion_pricing.html#what-the-congestion-data-already-tells-us",
+    "title": "A/B Testing Uber Pricing in NYC’s Congestion Zone",
+    "section": "What the Congestion Data Already Tells Us",
+    "text": "What the Congestion Data Already Tells Us\nThe January 2025 surcharge was, in effect, a real-world price test — one we can use to set expectations for the A/B test.\nMeasured price elasticity: ε = −0.135\nA 1% price increase → 0.135% fewer trips. Demand is highly inelastic.\nCompare to airline tickets (≈ −1.2) where a 1% increase causes a 1.2% drop. Manhattan Uber is far stickier.\nWhat this means for the A/B test:\n\nWe expect a 5% fare increase to reduce trips by roughly 0.7%\nRevenue should increase for Group B\nIf we see a much bigger drop, something has changed — the A/B test catches that before we commit"
+  },
+  {
+    "objectID": "Soleimani_Arman-uber_congestion_pricing.html#reading-the-results",
+    "href": "Soleimani_Arman-uber_congestion_pricing.html#reading-the-results",
+    "title": "A/B Testing Uber Pricing in NYC’s Congestion Zone",
+    "section": "Reading the Results",
+    "text": "Reading the Results\nAfter 4–6 weeks, two things need to be true before you act.\n\n\nIs the difference real? Statistical significance\nDid we collect enough data that the result isn’t just noise? With millions of trips per month, this threshold is reached quickly.\nStandard threshold: p &lt; 0.05\n\nDoes the difference matter? Practical significance\nA real result might still be too small to act on. A 0.01% revenue increase isn’t worth the operational complexity of changing the pricing model.\nSet a minimum threshold before the test: e.g., at least 3% revenue uplift\n\n\n\nBoth boxes need to be checked. Statistical significance without practical significance is just noise that survived the math."
+  },
+  {
+    "objectID": "Soleimani_Arman-uber_congestion_pricing.html#making-the-call",
+    "href": "Soleimani_Arman-uber_congestion_pricing.html#making-the-call",
+    "title": "A/B Testing Uber Pricing in NYC’s Congestion Zone",
+    "section": "Making the Call",
+    "text": "Making the Call\nAt the end of the test, you’re in one of three situations.\nShip it — Revenue up, trip volume held, guardrail metrics clean. Roll the increase out to all riders in the congestion zone.\nIterate — Revenue up but cancellations also rose. Try a smaller increase (3%) or test different framing — “congestion fee” vs. a silent base fare change.\nDon’t ship — Trip volume dropped more than expected, or retention fell. Elasticity in practice is worse than the model predicted. Hold prices flat and revisit.\nThe whole point of the test: a “don’t ship” result costs almost nothing — only a small share of riders saw the higher price, for a few weeks, with no permanent change."
+  },
+  {
+    "objectID": "Soleimani_Arman-uber_congestion_pricing.html#key-takeaways",
+    "href": "Soleimani_Arman-uber_congestion_pricing.html#key-takeaways",
+    "title": "A/B Testing Uber Pricing in NYC’s Congestion Zone",
+    "section": "Key Takeaways",
+    "text": "Key Takeaways\n01 — Congestion pricing created a natural signal, but not a safe enough one to act on alone. An A/B test confirms whether the finding holds when Uber intentionally raises prices.\n02 — A/B testing turns a risky pricing decision into a measured one. You expose a small group, measure the real impact, and then decide — not the other way around.\n03 — Watch the guardrail metrics, not just the headline number. Revenue can rise in the short run while retention quietly deteriorates.\n04 — The value of the test is the option to stop. If results are worse than expected, you’ve learned something important at minimal cost — before committing to a change affecting millions of trips a month."
+  },
+  {
+    "objectID": "Soleimani_Arman-running_page_build.html",
+    "href": "Soleimani_Arman-running_page_build.html",
+    "title": "My Running Page",
+    "section": "",
+    "text": "Three elements make it feel like an athlete hub rather than a standard Quarto content page.\n\n\n🎥 Hero Video\nA looping clip that fills the entire top of the page — no side margins. Plays automatically and silently.\n\n⚡ Strava Button\nA custom-styled link in Strava orange linking to my athlete profile. Colors and shadow manually coded to match the brand.\n\n🏆 Brand Partnerships\nEmbedded Instagram post (Under Armour) and YouTube Short (GU Energy) — real media from real collaborations."
+  },
+  {
+    "objectID": "Soleimani_Arman-running_page_build.html#whats-on-the-page",
+    "href": "Soleimani_Arman-running_page_build.html#whats-on-the-page",
+    "title": "My Running Page",
+    "section": "",
+    "text": "Three elements make it feel like an athlete hub rather than a standard Quarto content page.\n\n\n🎥 Hero Video\nA looping clip that fills the entire top of the page — no side margins. Plays automatically and silently.\n\n⚡ Strava Button\nA custom-styled link in Strava orange linking to my athlete profile. Colors and shadow manually coded to match the brand.\n\n🏆 Brand Partnerships\nEmbedded Instagram post (Under Armour) and YouTube Short (GU Energy) — real media from real collaborations."
+  },
+  {
+    "objectID": "Soleimani_Arman-running_page_build.html#two-brand-collaborations",
+    "href": "Soleimani_Arman-running_page_build.html#two-brand-collaborations",
+    "title": "My Running Page",
+    "section": "Two Brand Collaborations",
+    "text": "Two Brand Collaborations\nRather than describing partnerships in prose, I embedded the actual social posts — so the content speaks for itself.\n\n\nUnder Armour · Instagram\nOakland Half × UA Elite Team\nI was part of the Under Armour Elite Team for the Oakland Half Marathon. The post is embedded directly — showing the relationship in context.\n\nGU Energy · YouTube\nPace the Rainbow\nGU Energy featured me in their campaign. Embedded as a vertical Short (9:16) so it displays in the intended format — not a widescreen rectangle."
+  },
+  {
+    "objectID": "Soleimani_Arman-running_page_build.html#adding-the-page-in-_quarto.yml",
+    "href": "Soleimani_Arman-running_page_build.html#adding-the-page-in-_quarto.yml",
+    "title": "My Running Page",
+    "section": "Adding the Page in _quarto.yml",
+    "text": "Adding the Page in _quarto.yml\nThe running page needed to appear in the shared navbar without inheriting the site’s default content styles.\nwebsite:\n  navbar:\n    left:\n      - href: index.qmd\n        text: About\n      - href: running.qmd   # adds Running to every page's nav\n        text: Running\n\nformat:\n  html:\n    theme: [cosmo, brand]\n    css: styles.css         # Playfair + Barlow loaded site-wide\nTwo lines is all it takes for the Running link to appear in the navbar on every page automatically.\nstyles.css imports Playfair Display and Barlow Condensed — the font pair used across the whole site."
+  },
+  {
+    "objectID": "Soleimani_Arman-running_page_build.html#the-running.qmd-file",
+    "href": "Soleimani_Arman-running_page_build.html#the-running.qmd-file",
+    "title": "My Running Page",
+    "section": "The running.qmd File",
+    "text": "The running.qmd File\nThe entire running page lives in one {=html} passthrough block — so Quarto passes it straight to the browser untouched.\n---\ntitle: \"\"           # suppresses the auto-generated &lt;h1&gt;\nformat:\n  html:\n    self-contained: false\n---\n```{=html}\n&lt;style&gt;\n  /* page-scoped CSS — only affects running.html */\n  body { background-color: #2C4A2E; }\n&lt;/style&gt;\n\n&lt;div class=\"hero-video-container\"&gt; ... &lt;/div&gt;\n&lt;div class=\"running-content\"&gt; ... &lt;/div&gt;\n```\n\nBlank title — suppresses Quarto’s auto &lt;h1&gt; so the video fills immediately\nself-contained: false — keeps shared site_libs/ assets linked; without this, the navbar breaks\nStyles stay on this page only — the dark green doesn’t leak to other pages"
+  },
+  {
+    "objectID": "Soleimani_Arman-running_page_build.html#breaking-out-of-quartos-layout-grid",
+    "href": "Soleimani_Arman-running_page_build.html#breaking-out-of-quartos-layout-grid",
+    "title": "My Running Page",
+    "section": "Breaking Out of Quarto’s Layout Grid",
+    "text": "Breaking Out of Quarto’s Layout Grid\nQuarto adds side margins to every page by default. To make the video go edge-to-edge, I zeroed out the grid and used a CSS escape on the video div.\n/* Zero out Quarto's 4-column grid */\n.page-columns {\n  grid-template-columns: 0 0 1fr 0 !important;\n  padding-left: 0 !important;\n  padding-right: 0 !important;\n}\n\n/* Expand the video to full viewport width */\n.hero-video-container {\n  width: 100vw;\n  left: 50%;\n  transform: translateX(-50%);  /* re-center it */\n  height: 60vh;\n}\n\n/* Fill the box without distorting the video */\nvideo {\n  object-fit: cover;  /* same as background-size: cover */\n}\nSetting all non-content grid columns to 0 removes the gutters. 100vw + translateX(-50%) is the standard CSS escape from any constrained parent."
+  },
+  {
+    "objectID": "Soleimani_Arman-running_page_build.html#keeping-the-navbar-intact",
+    "href": "Soleimani_Arman-running_page_build.html#keeping-the-navbar-intact",
+    "title": "My Running Page",
+    "section": "Keeping the Navbar Intact",
+    "text": "Keeping the Navbar Intact\nMaking the page dark green turned the navbar green too. A targeted rule tells the navbar to keep its original color.\n/* Dark green background for the whole page */\nbody, .quarto-container, #quarto-content {\n  background-color: #2C4A2E !important;\n}\n\n/* Rollback: navbar keeps its own color */\n#quarto-header,\n#quarto-header *,   /* catches every child element */\n.navbar, .nav-link {\n  color: #343a40 !important;\n}\n\n/* Text on the green page: cream */\np, li, span { color: #f5f0e8; }\n\n/* Content capped at readable width */\n.running-content { max-width: 600px; margin: 0 auto; }\n!important is needed because Bootstrap applies colors with high specificity. #quarto-header * catches every descendent — links, brand text, icons — so none inherit the green."
+  },
+  {
+    "objectID": "Soleimani_Arman-running_page_build.html#the-strava-button",
+    "href": "Soleimani_Arman-running_page_build.html#the-strava-button",
+    "title": "My Running Page",
+    "section": "The Strava Button",
+    "text": "The Strava Button\nA regular HTML link styled with CSS to look like a Strava button — no library needed.\n&lt;a href=\"https://www.strava.com/athletes/53854051\"\n   target=\"_blank\"\n   class=\"strava-btn\"&gt;My Strava&lt;/a&gt;\n.strava-btn {\n  background-color: #D4511E;      /* Strava's exact brand orange */\n  color: white !important;\n  padding: 12px 24px;\n  border-radius: 0;               /* sharp corners — intentional */\n  box-shadow: 3px 3px 0 #1C1915; /* hard-edged, zero-blur shadow */\n  font-family: 'Barlow Condensed', sans-serif;\n  letter-spacing: 0.15em;\n  text-transform: uppercase;\n  font-weight: bold;\n}\n\n#D4511E — Strava’s exact brand color; the button reads as “Strava” before anyone reads the text\nborder-radius: 0 — sharp corners match the athletic, direct tone of the page\nbox-shadow: 3px 3px 0 — zero blur = hard-edged stamp effect, not a soft glow"
+  },
+  {
+    "objectID": "Soleimani_Arman-running_page_build.html#embedding-instagram-youtube",
+    "href": "Soleimani_Arman-running_page_build.html#embedding-instagram-youtube",
+    "title": "My Running Page",
+    "section": "Embedding Instagram & YouTube",
+    "text": "Embedding Instagram & YouTube\nEach platform provides an official embed code to copy into any webpage. These only work inside a {=html} block — Quarto strips iframes from regular Markdown sections.\n&lt;!-- Instagram: placeholder replaced by embed.js at runtime --&gt;\n&lt;blockquote\n  class=\"instagram-media\"\n  data-instgrm-permalink=\"https://www.instagram.com/p/DWO0y71kTFG/\"\n  data-instgrm-version=\"14\"\n  style=\"width:100%; max-width:540px;\"&gt;\n&lt;/blockquote&gt;\n&lt;script async src=\"//www.instagram.com/embed.js\"&gt;&lt;/script&gt;\n\n&lt;!-- YouTube: iframe at 9:16 portrait dimensions --&gt;\n&lt;iframe\n  width=\"315\" height=\"560\"\n  src=\"https://www.youtube.com/embed/vY5WS2eHcCo\"\n  allowfullscreen&gt;\n&lt;/iframe&gt;\n\nInstagram — embed.js scans the DOM and replaces the blockquote with a live widget\n315×560 — exactly 9:16, matching the YouTube Short’s vertical format\n{=html} required — Quarto removes iframes from Markdown for security; the raw block bypasses this"
+  },
+  {
+    "objectID": "Soleimani_Arman-running_page_build.html#design-choices",
+    "href": "Soleimani_Arman-running_page_build.html#design-choices",
+    "title": "My Running Page",
+    "section": "Design Choices",
+    "text": "Design Choices\nA tight palette used consistently — the Strava orange appears only on key actions so it always draws the eye.\n\n\n\n\n\nSwatch\nHex\nRole\n\n\n\n\nForest green\n#2C4A2E\nPage background\n\n\nCream\n#F5F0E8\nAll text\n\n\nStrava orange\n#D4511E\nCTAs and accents\n\n\nInk\n#1C1915\nShadows and borders\n\n\n\nTypography\n\nPlayfair Display — headings; editorial, magazine feel\nBarlow Condensed — body, labels, buttons; narrow and athletic\n\n\nWhy these choices?\n\nForest green = outdoors and endurance without being a cliché sports color\nCream instead of white softens contrast — warmer and easier to read\nOne accent color means it always stands out; no competition for attention\nSharp corners throughout reinforce a direct, confident tone"
+  },
+  {
+    "objectID": "Soleimani_Arman-running_page_build.html#what-this-page-demonstrates",
+    "href": "Soleimani_Arman-running_page_build.html#what-this-page-demonstrates",
+    "title": "My Running Page",
+    "section": "What This Page Demonstrates",
+    "text": "What This Page Demonstrates\n\n\n01 — Full design control inside Quarto’s structure\nThe shared navbar and deployment pipeline come from _quarto.yml. The {=html} block handles everything visible — the two layers don’t interfere.\n02 — CSS overrides as the escape hatch\nThe grid override, container-escape technique, and navbar rollback are three targeted patches — nothing is blanket-reset.\n\n03 — Content-first framing\nEvery design decision — the palette, portrait embed dimensions, sharp button corners — was made to serve the partnerships and brand identity, not to demonstrate complexity.\n04 — Personal + professional in one page\nUnder Armour and GU Energy partnerships sit alongside a live Strava link — the page functions as both a portfolio piece and an active athlete hub."
   }
 ]

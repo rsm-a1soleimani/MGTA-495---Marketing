@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Arman Soleimani">
 
-<title>projects – Arman Soleimani</title>
+<title>A/B Testing Uber Pricing in NYC’s Congestion Zone – Arman Soleimani</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -113,17 +114,234 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-setup" id="toc-the-setup" class="nav-link active" data-scroll-target="#the-setup">The Setup</a></li>
+  <li><a href="#why-not-just-look-at-what-happened" id="toc-why-not-just-look-at-what-happened" class="nav-link" data-scroll-target="#why-not-just-look-at-what-happened">Why Not Just Look at What Happened?</a></li>
+  <li><a href="#what-is-ab-testing" id="toc-what-is-ab-testing" class="nav-link" data-scroll-target="#what-is-ab-testing">What Is A/B Testing?</a></li>
+  <li><a href="#designing-the-test" id="toc-designing-the-test" class="nav-link" data-scroll-target="#designing-the-test">Designing the Test</a></li>
+  <li><a href="#what-to-measure" id="toc-what-to-measure" class="nav-link" data-scroll-target="#what-to-measure">What to Measure</a></li>
+  <li><a href="#what-the-congestion-data-already-tells-us" id="toc-what-the-congestion-data-already-tells-us" class="nav-link" data-scroll-target="#what-the-congestion-data-already-tells-us">What the Congestion Data Already Tells Us</a></li>
+  <li><a href="#reading-the-results" id="toc-reading-the-results" class="nav-link" data-scroll-target="#reading-the-results">Reading the Results</a></li>
+  <li><a href="#making-the-call" id="toc-making-the-call" class="nav-link" data-scroll-target="#making-the-call">Making the Call</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key Takeaways</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="Soleimani_Arman-uber_congestion_pricing.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">A/B Testing Uber Pricing in NYC’s Congestion Zone</h1>
+<p class="subtitle lead">How to measure what riders will actually tolerate</p>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Arman Soleimani </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">Invalid Date</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
 
 
+</header>
 
+
+<section id="the-setup" class="level2">
+<h2 class="anchored" data-anchor-id="the-setup">The Setup</h2>
+<p>In January 2025, NYC started charging tolls on every vehicle entering Manhattan below 60th Street. For Uber, that meant a <strong>$1.50 congestion surcharge per trip</strong> — passed directly to riders.</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>What changed</strong></p>
+<p>A forced price increase — every Uber trip into lower Manhattan suddenly cost $1.50 more, overnight.</p>
+</div><div class="column" style="width:33%;">
+<p><strong>What we observed</strong></p>
+<p>Despite higher prices, trip volume in the congestion zone stayed high. Riders kept riding.</p>
+</div><div class="column" style="width:33%;">
+<p><strong>The opportunity</strong></p>
+<p>If riders absorbed a $1.50 surcharge without flinching — could Uber raise base fares further?</p>
+</div>
+</div>
+</section>
+<section id="why-not-just-look-at-what-happened" class="level2">
+<h2 class="anchored" data-anchor-id="why-not-just-look-at-what-happened">Why Not Just Look at What Happened?</h2>
+<p>The congestion policy gave us useful evidence — but observational data has limits. To <em>safely</em> change prices further, you need a controlled test.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Approach</th>
+<th>What you learn</th>
+<th>Good enough to act on?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Before/after trip data</td>
+<td>Demand held up after the surcharge</td>
+<td>Maybe — confounded by season, events</td>
+</tr>
+<tr class="even">
+<td>Congestion zone vs.&nbsp;outer boroughs</td>
+<td>Zone-specific price effect</td>
+<td>Better — but zones differ in other ways</td>
+</tr>
+<tr class="odd">
+<td><strong>Randomized A/B test</strong></td>
+<td>Exactly how <em>this</em> price affects <em>these</em> riders</td>
+<td><strong>Yes — cleanest signal for a decision</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote class="blockquote">
+<p>Observational data tells you what happened. An A/B test tells you what <strong>caused</strong> it — and what will happen if you do it again, intentionally.</p>
+</blockquote>
+</section>
+<section id="what-is-ab-testing" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-ab-testing">What Is A/B Testing?</h2>
+<p>Split your users randomly into two groups. Give each a different experience. Measure what changes. Decide based on the difference.</p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p><strong>Group A — Control</strong></p>
+<ul>
+<li>Standard Uber fares</li>
+<li>No change from today</li>
+<li>Sets the baseline to compare against</li>
+</ul>
+</div><div class="column" style="width:48%;">
+<p><strong>Group B — Treatment</strong></p>
+<ul>
+<li>Slightly higher base fare in the congestion zone</li>
+<li>Everything else identical</li>
+<li>Reveals how riders respond</li>
+</ul>
+</div>
+</div>
+<p>Because assignment is <strong>random</strong>, any difference in behavior between the two groups can only be explained by the price change — not by who the riders are or when they travel.</p>
+</section>
+<section id="designing-the-test" class="level2">
+<h2 class="anchored" data-anchor-id="designing-the-test">Designing the Test</h2>
+<p>Three decisions matter before you start.</p>
+<p><strong>01 — What to test</strong> A 5% base fare increase on trips starting in the Manhattan congestion zone. Small enough to limit downside; large enough to detect a real signal.</p>
+<p><strong>02 — How to split users</strong> Randomly assign by <strong>user ID</strong> — not by time or location. This prevents the same person from seeing different prices on different days, which would confuse the measurement.</p>
+<p><strong>03 — How long to run it</strong> At least <strong>4–6 weeks</strong>. Short tests get distorted by day-of-week patterns and weather. Long enough for riders to adapt their behavior — not just react to novelty.</p>
+</section>
+<section id="what-to-measure" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-measure">What to Measure</h2>
+<p>Not all metrics are equal. You need a <strong>primary metric</strong> that defines success, and <strong>guardrail metrics</strong> that flag if something is breaking.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Metric</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Primary</td>
+<td>Revenue per rider</td>
+<td>Are we actually making more?</td>
+</tr>
+<tr class="even">
+<td>Primary</td>
+<td>Trip completion rate</td>
+<td>Are riders finishing rides at the same rate?</td>
+</tr>
+<tr class="odd">
+<td>Guardrail</td>
+<td>Cancellation rate</td>
+<td>Price shock visible at checkout?</td>
+</tr>
+<tr class="even">
+<td>Guardrail</td>
+<td>30-day retention</td>
+<td>Are riders quietly leaving over time?</td>
+</tr>
+<tr class="odd">
+<td>Competitive</td>
+<td>Lyft usage in zone</td>
+<td>Are riders switching platforms, not just stopping?</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-the-congestion-data-already-tells-us" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-congestion-data-already-tells-us">What the Congestion Data Already Tells Us</h2>
+<p>The January 2025 surcharge was, in effect, a real-world price test — one we can use to set expectations for the A/B test.</p>
+<p><strong>Measured price elasticity: ε = −0.135</strong></p>
+<p>A 1% price increase → 0.135% fewer trips. Demand is highly inelastic.</p>
+<p>Compare to airline tickets (≈ −1.2) where a 1% increase causes a 1.2% drop. Manhattan Uber is far stickier.</p>
+<p><strong>What this means for the A/B test:</strong></p>
+<ul>
+<li>We expect a 5% fare increase to reduce trips by roughly 0.7%</li>
+<li>Revenue should increase for Group B</li>
+<li>If we see a much bigger drop, something has changed — the A/B test catches that <em>before</em> we commit</li>
+</ul>
+</section>
+<section id="reading-the-results" class="level2">
+<h2 class="anchored" data-anchor-id="reading-the-results">Reading the Results</h2>
+<p>After 4–6 weeks, two things need to be true before you act.</p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<p><strong>Is the difference real?</strong> <em>Statistical significance</em></p>
+<p>Did we collect enough data that the result isn’t just noise? With millions of trips per month, this threshold is reached quickly.</p>
+<p><em>Standard threshold: p &lt; 0.05</em></p>
+</div><div class="column" style="width:48%;">
+<p><strong>Does the difference matter?</strong> <em>Practical significance</em></p>
+<p>A real result might still be too small to act on. A 0.01% revenue increase isn’t worth the operational complexity of changing the pricing model.</p>
+<p><em>Set a minimum threshold before the test: e.g., at least 3% revenue uplift</em></p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Both boxes need to be checked. Statistical significance without practical significance is just noise that survived the math.</p>
+</blockquote>
+</section>
+<section id="making-the-call" class="level2">
+<h2 class="anchored" data-anchor-id="making-the-call">Making the Call</h2>
+<p>At the end of the test, you’re in one of three situations.</p>
+<p><strong>Ship it</strong> — Revenue up, trip volume held, guardrail metrics clean. Roll the increase out to all riders in the congestion zone.</p>
+<p><strong>Iterate</strong> — Revenue up but cancellations also rose. Try a smaller increase (3%) or test different framing — “congestion fee” vs.&nbsp;a silent base fare change.</p>
+<p><strong>Don’t ship</strong> — Trip volume dropped more than expected, or retention fell. Elasticity in practice is worse than the model predicted. Hold prices flat and revisit.</p>
+<p>The whole point of the test: a “don’t ship” result costs almost nothing — only a small share of riders saw the higher price, for a few weeks, with no permanent change.</p>
+</section>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key Takeaways</h2>
+<p><strong>01</strong> — Congestion pricing created a natural signal, but not a safe enough one to act on alone. An A/B test confirms whether the finding holds when Uber <em>intentionally</em> raises prices.</p>
+<p><strong>02</strong> — A/B testing turns a risky pricing decision into a measured one. You expose a small group, measure the real impact, and then decide — not the other way around.</p>
+<p><strong>03</strong> — Watch the guardrail metrics, not just the headline number. Revenue can rise in the short run while retention quietly deteriorates.</p>
+<p><strong>04</strong> — The value of the test is the option to stop. If results are worse than expected, you’ve learned something important at minimal cost — before committing to a change affecting millions of trips a month.</p>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
